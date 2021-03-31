@@ -1,7 +1,7 @@
 # Проект «Киноман»
 
-* Студент: [Илья Кривокотченко](https://up.htmlacademy.ru/ecmascript/14/user/669395).
-* Наставник: `Неизвестно`.
+- Студент: [Илья Кривокотченко](https://up.htmlacademy.ru/ecmascript/14/user/669395).
+- Наставник: [Сергей Рожков] (https://htmlacademy.ru/profile/id1069033).
 
 ---
 
