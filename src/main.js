@@ -6,16 +6,16 @@ import { createUserGradeTemplate } from './view/user-grade.js';
 import { createFilmListTemplate } from './view/card-list.js';
 
 const render = (container, template, place) => {
-    container.insertAdjacentHTML(place, template)
-}
+  container.insertAdjacentHTML(place, template);
+};
 
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
 
-render (mainHeaderElement, createUserGradeTemplate(), 'beforeend')
-render (mainPageElement, createSiteMenuTemplate(), 'beforeend')
-render (mainPageElement, createFilmListTemplate(), 'beforeend')
-render (mainPageElement, createFilmInfoPopupTemplate(), 'beforeend')
+render (mainHeaderElement, createUserGradeTemplate(), 'beforeend');
+render (mainPageElement, createSiteMenuTemplate(), 'beforeend');
+render (mainPageElement, createFilmListTemplate(), 'beforeend');
+render (mainPageElement, createFilmInfoPopupTemplate(), 'beforeend');
 
 const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
@@ -23,17 +23,14 @@ const filmsListContainerElement = filmsListElement.querySelector('.films-list__c
 const filmsListExtraElement = mainPageElement.querySelectorAll('.films-list--extra');
 
 for (let i = 0; i < 5; i++) {
-  render (filmsListContainerElement, createFilmCardTemplate(), 'beforeend')
+  render (filmsListContainerElement, createFilmCardTemplate(), 'beforeend');
 }
 
-filmsListExtraElement.forEach(filmContainer => {
-const filmsListExtraContainerElement = filmContainer.querySelector('.films-list__container');
+filmsListExtraElement.forEach((filmContainer) => {
+  const filmsListExtraContainerElement = filmContainer.querySelector('.films-list__container');
   for (let i = 0; i < 2; i++) {
-    render (filmsListExtraContainerElement, createFilmCardTemplate(), 'beforeend')
+    render (filmsListExtraContainerElement, createFilmCardTemplate(), 'beforeend');
   }
-})
+});
 
-render (filmsListElement, createShowMoreButtonTemplate(), 'beforeend')
-
-
-
+render (filmsListElement, createShowMoreButtonTemplate(), 'beforeend');
