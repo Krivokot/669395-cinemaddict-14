@@ -15,13 +15,25 @@ const mainHeaderElement = document.querySelector('.header');
 render (mainHeaderElement, createUserGradeTemplate(), 'beforeend')
 render (mainPageElement, createSiteMenuTemplate(), 'beforeend')
 render (mainPageElement, createFilmListTemplate(), 'beforeend')
-// render (mainPageElement, createFilmInfoPopupTemplate(), 'beforeend')
+render (mainPageElement, createFilmInfoPopupTemplate(), 'beforeend')
 
-const filmsBlockElement = mainPageElement.querySelector('.films-list');
-const filmsListContainerElement = filmsBlockElement.querySelector('.films-list__container');
+const filmsListElement = mainPageElement.querySelector('.films-list');
+const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
-render (filmsListContainerElement, createFilmCardTemplate(), 'beforeend')
-render (filmsBlockElement, createShowMoreButtonTemplate(), 'beforeend')
+const filmsListExtraElement = mainPageElement.querySelectorAll('.films-list--extra');
+
+for (let i = 0; i < 5; i++) {
+  render (filmsListContainerElement, createFilmCardTemplate(), 'beforeend')
+}
+
+filmsListExtraElement.forEach(filmContainer => {
+const filmsListExtraContainerElement = filmContainer.querySelector('.films-list__container');
+  for (let i = 0; i < 2; i++) {
+    render (filmsListExtraContainerElement, createFilmCardTemplate(), 'beforeend')
+  }
+})
+
+render (filmsListElement, createShowMoreButtonTemplate(), 'beforeend')
 
 
 
