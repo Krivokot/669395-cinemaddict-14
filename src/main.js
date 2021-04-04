@@ -4,6 +4,7 @@ import { createSiteMenuTemplate } from './view/menu.js';
 import { createShowMoreButtonTemplate } from './view/show-button.js';
 import { createUserGradeTemplate } from './view/user-grade.js';
 import { createFilmListTemplate } from './view/card-list.js';
+import {generateCard} from './mock/cardInfo.js';
 
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
