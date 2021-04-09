@@ -6,6 +6,12 @@ import { createUserGradeTemplate } from './view/user-grade.js';
 import { createFilmListTemplate } from './view/card-list.js';
 import {generateCard} from './mock/cardInfo.js';
 
+const CARDS_COUNT = 15;
+
+const cards = new Array(CARDS_COUNT).fill().map(generateCard);
+
+console.log(cards);
+
 const render = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
@@ -16,15 +22,15 @@ const mainHeaderElement = document.querySelector('.header');
 render (mainHeaderElement, createUserGradeTemplate(), 'beforeend');
 render (mainPageElement, createSiteMenuTemplate(), 'beforeend');
 render (mainPageElement, createFilmListTemplate(), 'beforeend');
-render (mainPageElement, createFilmInfoPopupTemplate(), 'beforeend');
+// render (mainPageElement, createFilmInfoPopupTemplate(), 'beforeend');
 
 const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
 const filmsListExtraElement = mainPageElement.querySelectorAll('.films-list--extra');
 
-for (let i = 0; i < 5; i++) {
-  render (filmsListContainerElement, createFilmCardTemplate(), 'beforeend');
+for (let i = 0; i < CARDS_COUNT; i++) {
+  render (filmsListContainerElement, createFilmCardTemplate(cards[i]), 'beforeend');
 }
 
 filmsListExtraElement.forEach((filmContainer) => {
