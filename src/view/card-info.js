@@ -1,4 +1,6 @@
-const createFilmInfoPopupTemplate = () => {
+const createFilmInfoPopupTemplate = (card) => {
+  const {title, poster, description} = card;
+
   return `
     <section class="film-details">
   <form class="film-details__inner" action="" method="get">
