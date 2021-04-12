@@ -1,4 +1,6 @@
-const getRandomInt = (arg) => {
+import dayjs from "dayjs";
+
+export const getRandomInt = (arg) => {
   return Math.floor(Math.random() * arg);
 };
 
@@ -8,10 +10,35 @@ const titles = [
   'Twin Peaks',
 ];
 
+const ratings = [
+  '1',
+  '2',
+  '3',
+  '4',
+  '5',
+];
+
+const ageRatings = [
+  '12+',
+  '16+',
+  '18+'
+];
+
+const directors = [
+  'Kventin Tarantino',
+  'Guy Ritchie',
+  'Christofer Nolan',
+];
+
 const posters = [
   'made-for-each-other.png',
   'popeye-meets-sinbad.png',
   'sagebrush-trail.jpg',
+];
+
+const booleans = [
+  'true',
+  'false'
 ];
 
 const descriptions = [
@@ -38,12 +65,21 @@ const generateRandomDescription = () => {
   return String(summaryDescription);
 }
 
-const generateRandomElement = (element) => {
+const generateRandomValue = (element) => {
 
-  const randomElementId = getRandomInt(element.length);
+  const randomValuetId = getRandomInt(element.length);
 
-  return element[randomElementId];
+  return element[randomValuetId];
 };
+
+const generateDate = (year, yearPlus) => {
+  return dayjs()
+    .add(getRandomInt(31), 'day')
+    .add(getRandomInt(12), 'month')
+    .set('year', year)
+    .add(getRandomInt(yearPlus), 'year')
+    .format('D MMMM YYYY');
+}
 
 export const generateCard = () => {
   return {
@@ -52,12 +88,12 @@ export const generateCard = () => {
       'some'
     ],
     film_info: {
-      title: generateRandomElement(titles),
-      alternative_title: 'some',
-      total_rating: 'some',
-      poster: `./images/posters/${generateRandomElement(posters)}`,
-      age_rating: 'some',
-      director: 'some',
+      title: generateRandomValue(titles),
+      alternative_title: generateRandomValue(titles),
+      total_rating: generateRandomValue(ratings),
+      poster: `./images/posters/${generateRandomValue(posters)}`,
+      age_rating: generateRandomValue(ageRatings),
+      director: generateRandomValue(directors),
       writers: [
         'some'
       ],
@@ -65,7 +101,7 @@ export const generateCard = () => {
         'some'
       ],
       release: {
-        date: 'some',
+        date: generateDate(1920, 40),
         release_country: 'some',
       },
       runtime: 'some',
@@ -75,10 +111,10 @@ export const generateCard = () => {
       description: generateRandomDescription(),
     },
     user_details: {
-      watchlist: false,
-      already_watched: true,
-      watching_date: 'some',
-      favorite: false,
+      watchlist: generateRandomValue(booleans),
+      already_watched: generateRandomValue(booleans),
+      watching_date: generateDate(2010, 11),
+      favorite: generateRandomValue(booleans),
     },
   };
 }
