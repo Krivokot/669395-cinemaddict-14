@@ -5,6 +5,8 @@ import { createShowMoreButtonTemplate } from './view/show-button.js';
 import { createUserGradeTemplate } from './view/user-grade.js';
 import { createFilmListTemplate } from './view/card-list.js';
 import {generateCard} from './mock/card-mock.js';
+import { createCommentTemplate } from './view/comments.js';
+import { createSortTemplate } from './view/sort.js';
 
 const CARDS_COUNT = 15;
 const SHOW_MORE_COUNT = 5;
@@ -22,28 +24,26 @@ const mainHeaderElement = document.querySelector('.header');
 
 render (mainHeaderElement, createUserGradeTemplate(), 'beforeend');
 render (mainPageElement, createSiteMenuTemplate(), 'beforeend');
+render (mainPageElement, createSortTemplate(), 'beforeend');
 render (mainPageElement, createFilmListTemplate(), 'beforeend');
 
 const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
-const filmsListExtraElement = mainPageElement.querySelectorAll('.films-list--extra');
-
 const renderCards = (count) => {
   for (let i = 0; i < count; i++) {
     render (filmsListContainerElement, createFilmCardTemplate(cards[i]), 'beforeend');
-    // render (mainPageElement, createFilmInfoPopupTemplate(cards[i]), 'beforeend');
+
+    const posterNode = filmsListContainerElement.querySelectorAll('.film-card__poster');
+    posterNode.forEach(poster => {
+      poster.addEventListener('click', () => {
+        render (mainPageElement, createFilmInfoPopupTemplate(cards[i]), 'beforeend');
+      })
+    })
   }
 }
 
 renderCards(CARDS_COUNT);
-
-filmsListExtraElement.forEach((filmContainer) => {
-  const filmsListExtraContainerElement = filmContainer.querySelector('.films-list__container');
-  for (let i = 0; i < 2; i++) {
-    render (filmsListExtraContainerElement, createFilmCardTemplate(cards[i]), 'beforeend');
-  }
-});
 
 render (filmsListElement, createShowMoreButtonTemplate(), 'beforeend');
 

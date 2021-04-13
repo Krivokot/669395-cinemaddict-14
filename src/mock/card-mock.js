@@ -55,7 +55,39 @@ const descriptions = [
   'In rutrum ac purus sit amet tempus.',
 ];
 
-const generateRandomDescription = () => {
+const authors = [
+  'Ilya',
+  'Jack',
+  'Pete',
+];
+
+const emotions = ['smile', 'sleeping', 'puke', 'angry'];
+
+const comments = [
+  'Its good!',
+  'So baaaaaaad',
+  'Like it!',
+  'Watch again',
+  'Dont know',
+];
+
+const generateRandomValue = (element) => {
+
+  const randomValuetId = getRandomInt(element.length);
+
+  return element[randomValuetId];
+};
+
+const generateDate = (year, yearPlus, format) => {
+  return dayjs()
+    .add(getRandomInt(31), 'day')
+    .add(getRandomInt(12), 'month')
+    .set('year', year)
+    .add(getRandomInt(yearPlus), 'year')
+    .format(format);
+}
+
+const generateRandomText = () => {
   const randomLength = getRandomInt(descriptions.length)
 
   const summaryDescription = [];
@@ -65,28 +97,21 @@ const generateRandomDescription = () => {
   return String(summaryDescription);
 }
 
-const generateRandomValue = (element) => {
 
-  const randomValuetId = getRandomInt(element.length);
-
-  return element[randomValuetId];
-};
-
-const generateDate = (year, yearPlus) => {
-  return dayjs()
-    .add(getRandomInt(31), 'day')
-    .add(getRandomInt(12), 'month')
-    .set('year', year)
-    .add(getRandomInt(yearPlus), 'year')
-    .format('D MMMM YYYY');
-}
+const generateComment = () => {
+  return {
+    id: getRandomInt(1000),
+    author: generateRandomValue(authors),
+    comment: generateRandomValue(comments),
+    date: generateDate(2021, 0, 'YYYY/MM/DD HH:MM'),
+    emotion: generateRandomValue(emotions),
+    }
+  }
 
 export const generateCard = () => {
   return {
-    id: 'some',
-    comments: [
-      'some'
-    ],
+    id: getRandomInt(1000),
+    comments: generateComment(),
     film_info: {
       title: generateRandomValue(titles),
       alternative_title: generateRandomValue(titles),
@@ -101,19 +126,19 @@ export const generateCard = () => {
         'some'
       ],
       release: {
-        date: generateDate(1920, 40),
+        date: generateDate(1920, 40, 'D MMMM YYYY'),
         release_country: 'some',
       },
       runtime: 'some',
       genre: [
         'some'
       ],
-      description: generateRandomDescription(),
+      description: generateRandomText(),
     },
     user_details: {
       watchlist: generateRandomValue(booleans),
       already_watched: generateRandomValue(booleans),
-      watching_date: generateDate(2010, 11),
+      watching_date: generateDate(2010, 11, 'D MMMM YYYY'),
       favorite: generateRandomValue(booleans),
     },
   };
