@@ -8,8 +8,8 @@ import {generateCard} from './mock/card-mock.js';
 import { createCommentTemplate } from './view/comments.js';
 import { createSortTemplate } from './view/sort.js';
 
-const CARDS_COUNT = 15;
-const SHOW_MORE_COUNT = 5;
+const CARDS_COUNT = 25;
+const CARDS_COUNT_PER_STEP = 5;
 
 const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 
@@ -30,25 +30,45 @@ render (mainPageElement, createFilmListTemplate(), 'beforeend');
 const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
-const renderCards = (count) => {
+const renderPoups = (count) => {
   for (let i = 0; i < count; i++) {
-    render (filmsListContainerElement, createFilmCardTemplate(cards[i]), 'beforeend');
-
-    const posterNode = filmsListContainerElement.querySelectorAll('.film-card__poster');
-    posterNode.forEach(poster => {
-      poster.addEventListener('click', () => {
-        render (mainPageElement, createFilmInfoPopupTemplate(cards[i]), 'beforeend');
-      })
-    })
+    render (mainPageElement, createFilmInfoPopupTemplate(cards[i]), 'beforeend');
   }
 }
 
-renderCards(CARDS_COUNT);
 
-render (filmsListElement, createShowMoreButtonTemplate(), 'beforeend');
+for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
+    render (filmsListContainerElement, createFilmCardTemplate(cards[i]), 'beforeend');
+  }
 
-const showMoreButtonElement = document.querySelector('.films-list__show-more');
 
-showMoreButtonElement.addEventListener ('click', () => {
-  renderCards(SHOW_MORE_COUNT)
+
+const posterNode = filmsListContainerElement.querySelectorAll('.film-card__poster');
+
+posterNode.forEach(poster => {
+  poster.addEventListener('click', () => {
+    renderPoups(CARDS_COUNT);
+    console.log(mainPageElement);
+  })
 })
+
+if (cards.length > CARDS_COUNT_PER_STEP) {
+  let renderedCardCount = CARDS_COUNT_PER_STEP;
+  render (filmsListElement, createShowMoreButtonTemplate(), 'beforeend');
+
+  const showMoreButtonElement = document.querySelector('.films-list__show-more');
+
+  showMoreButtonElement.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    cards
+      .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
+      .forEach((card) => render (filmsListContainerElement, createFilmCardTemplate(card), 'beforeend'));
+
+      renderedCardCount += CARDS_COUNT_PER_STEP;
+
+    if (renderedCardCount >= cards.length) {
+      showMoreButtonElement.remove();
+    }
+  });
+}
+
