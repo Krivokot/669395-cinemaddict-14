@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 export const getRandomInt = (arg) => {
   return Math.floor(Math.random() * arg);
@@ -21,7 +21,7 @@ const ratings = [
 const ageRatings = [
   '12+',
   '16+',
-  '18+'
+  '18+',
 ];
 
 const directors = [
@@ -38,7 +38,7 @@ const posters = [
 
 const booleans = [
   'true',
-  'false'
+  'false',
 ];
 
 const descriptions = [
@@ -85,17 +85,17 @@ const generateDate = (year, yearPlus, format) => {
     .set('year', year)
     .add(getRandomInt(yearPlus), 'year')
     .format(format);
-}
+};
 
 const generateRandomText = () => {
-  const randomLength = getRandomInt(descriptions.length)
+  const randomLength = getRandomInt(descriptions.length);
 
   const summaryDescription = [];
   for (let i = 0; i < randomLength; i++) {
     summaryDescription.push(descriptions[i]);
   }
   return String(summaryDescription);
-}
+};
 
 
 const generateComment = () => {
@@ -105,8 +105,8 @@ const generateComment = () => {
     comment: generateRandomValue(comments),
     date: generateDate(2021, 0, 'YYYY/MM/DD HH:MM'),
     emotion: generateRandomValue(emotions),
-    }
-  }
+  };
+};
 
 export const generateCard = () => {
   return {
@@ -120,10 +120,10 @@ export const generateCard = () => {
       age_rating: generateRandomValue(ageRatings),
       director: generateRandomValue(directors),
       writers: [
-        'some'
+        'some',
       ],
       actors: [
-        'some'
+        'some',
       ],
       release: {
         date: generateDate(1920, 40, 'D MMMM YYYY'),
@@ -131,7 +131,7 @@ export const generateCard = () => {
       },
       runtime: 'some',
       genre: [
-        'some'
+        'some',
       ],
       description: generateRandomText(),
     },
@@ -142,4 +142,4 @@ export const generateCard = () => {
       favorite: generateRandomValue(booleans),
     },
   };
-}
+};
