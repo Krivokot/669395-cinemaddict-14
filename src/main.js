@@ -7,7 +7,6 @@ import CardListView from './view/card-list.js';
 import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-
 import { renderElement, RenderPosition} from './utils.js';
 
 const CARDS_COUNT = 25;
@@ -26,6 +25,7 @@ renderElement (mainPageElement, new CardListView().getElement(), RenderPosition.
 
 const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
+
 
 if (cards.length > 0) {
   for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
@@ -79,6 +79,9 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
       showMoreButtonComponent.getElement().remove();
       showMoreButtonComponent.removeElement();
     }
+
+    filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
+    generatePopup();
   });
 }
 
