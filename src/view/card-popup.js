@@ -1,8 +1,9 @@
+import {createElement} from '../utils.js';
+
 const createFilmInfoPopupTemplate = (card) => {
   const { film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} } } = card;
 
-  return `
-    <section class="film-details">
+  return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
       <div class="film-details__close">
@@ -84,7 +85,7 @@ const createFilmInfoPopupTemplate = (card) => {
         <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
 
         <ul class="film-details__comments-list">
-          
+
         </ul>
 
         <div class="film-details__new-comment">
@@ -122,5 +123,25 @@ const createFilmInfoPopupTemplate = (card) => {
 </section>`;
 };
 
-export {createFilmInfoPopupTemplate};
+export default class CardPopup {
+  constructor() {
+    this._element = null;
+  }
+
+  getTemplate(card) {
+    return createFilmInfoPopupTemplate(card);
+  }
+
+  getElement(card) {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate(card));
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
 

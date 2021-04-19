@@ -1,8 +1,5 @@
 import dayjs from 'dayjs';
-
-export const getRandomInt = (arg) => {
-  return Math.floor(Math.random() * arg);
-};
+import {getRandomInt} from '../utils.js';
 
 const titles = [
   'Kill Bill',

@@ -1,12 +1,14 @@
-import { createFilmInfoPopupTemplate } from './view/card-info.js';
-import { createFilmCardTemplate } from './view/card.js';
+import CardPopupView from './view/card-popup.js';
+import CardView from './view/card.js';
 import SiteMenuView from './view/menu.js';
 import ShowMoreButtonView from './view/show-button.js';
 import UserGradeView from './view/user-grade.js';
-import { createFilmListTemplate } from './view/card-list.js';
+import CardListView from './view/card-list.js';
+import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-import { renderTemplate, renderElement, RenderPosition} from './utils.js';
+
+import { renderElement, RenderPosition} from './utils.js';
 
 const CARDS_COUNT = 25;
 const CARDS_COUNT_PER_STEP = 5;
@@ -15,39 +17,48 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
+const body = document.querySelector('body');
 
 renderElement (mainHeaderElement, new UserGradeView().getElement(), RenderPosition.BEFOREEND);
 renderElement (mainPageElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
 renderElement (mainPageElement, new SortMenuView().getElement(), RenderPosition.BEFOREEND);
-renderTemplate (mainPageElement, createFilmListTemplate(), 'beforeend');
+renderElement (mainPageElement, new CardListView().getElement(), RenderPosition.BEFOREEND);
 
 const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
-for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
-  renderTemplate (filmsListContainerElement, createFilmCardTemplate(cards[i]), 'beforeend');
+if (cards.length > 0) {
+  for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
+    renderElement (filmsListContainerElement, new CardView().getElement(cards[i]), RenderPosition.BEFOREEND);
+  }
+} else {
+  renderElement (mainPageElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
 }
 
-const filmCard = filmsListContainerElement.querySelectorAll('.film-card');
+let filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
 
 const generatePopup = () => {
-  for (let i = 0; i < filmCard.length; i++) {
-    filmCard[i].addEventListener('click', () => {
-      renderTemplate (mainPageElement, createFilmInfoPopupTemplate(cards[i]), 'beforeend');
-      const filmPopup = mainPageElement.querySelector('.film-details');
-      closePopup(filmPopup);
+  for (let i = 0; i < filmCardsNode.length; i++) {
+    const cardPopupComponent = new CardPopupView();
+    filmCardsNode[i].addEventListener('click', () => {
+      renderElement (mainPageElement, cardPopupComponent.getElement(cards[i]), RenderPosition.BEFOREEND);
+      body.classList.add('hide-overflow');
+      closePopup(cardPopupComponent);
     });
   };
-}
+};
 
-generatePopup();
+const closePopup = (component) => {
+    const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
 
-const closePopup = (popup) => {
-    const closePopupButton =  popup.querySelector('.film-details__close-btn');
     closePopupButton.addEventListener('click', () => {
-      mainPageElement.removeChild(popup);
+      component.getElement().remove();
+      component.removeElement();
+      body.classList.remove('hide-overflow');
     });
 };
+
+generatePopup();
 
 if (cards.length > CARDS_COUNT_PER_STEP) {
   let renderedCardCount = CARDS_COUNT_PER_STEP;
@@ -56,10 +67,11 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
   renderElement(filmsListElement, showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
   showMoreButtonComponent.getElement().addEventListener('click', (evt) => {
+
     evt.preventDefault();
     cards
       .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
-      .forEach((card) => renderTemplate (filmsListContainerElement, createFilmCardTemplate(card), 'beforeend'));
+      .forEach((card) => renderElement (filmsListContainerElement, new CardView().getElement(card), RenderPosition.BEFOREEND));
 
     renderedCardCount += CARDS_COUNT_PER_STEP;
 

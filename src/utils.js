@@ -1,3 +1,7 @@
+export const getRandomInt = (arg) => {
+  return Math.floor(Math.random() * arg);
+};
+
 export const RenderPosition = {
   AFTERBEGIN: 'afterbegin',
   BEFOREEND: 'beforeend',
@@ -14,13 +18,13 @@ export const renderElement = (container, element, place) => {
   }
 };
 
-export const renderTemplate = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 export const createElement = (template) => {
   const newElement = document.createElement('div');
   newElement.innerHTML = template;
 
   return newElement.firstChild;
+};
+
+export const isEscEvent = (evt) => {
+  return evt.key === 'Escape' || evt.key === 'Esc';
 };
