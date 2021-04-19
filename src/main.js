@@ -34,7 +34,7 @@ if (cards.length > 0) {
   renderElement (mainPageElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
 }
 
-let filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
+const filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
 
 const generatePopup = () => {
   for (let i = 0; i < filmCardsNode.length; i++) {
@@ -44,31 +44,31 @@ const generatePopup = () => {
       body.classList.add('hide-overflow');
       closePopupByAction(cardPopupComponent);
     });
-  };
+  }
 };
 
 const closePopup = (component) => {
   component.getElement().remove();
   component.removeElement();
   body.classList.remove('hide-overflow');
-}
+};
 
 const closePopupByAction = (component) => {
-    const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
+  const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
 
-    closePopupButton.addEventListener('click', () => {
-      closePopup();
-    });
+  closePopupButton.addEventListener('click', () => {
+    closePopup();
+  });
 
-    const closePopupByKey = (evt) => {
-      if (isEscEvent(evt)) {
-        evt.preventDefault();
-        closePopup(component);
-        document.removeEventListener('keydown', closePopupByKey)
-      }
+  const closePopupByKey = (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      closePopup(component);
+      document.removeEventListener('keydown', closePopupByKey);
     }
+  };
 
-    document.addEventListener('keydown', closePopupByKey)
+  document.addEventListener('keydown', closePopupByKey);
 };
 
 generatePopup();
