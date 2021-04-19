@@ -45,17 +45,17 @@ const generatePopup = () => {
       body.classList.add('hide-overflow');
       closePopup(cardPopupComponent);
     });
-  };
+  }
 };
 
 const closePopup = (component) => {
-    const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
+  const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
 
-    closePopupButton.addEventListener('click', () => {
-      component.getElement().remove();
-      component.removeElement();
-      body.classList.remove('hide-overflow');
-    });
+  closePopupButton.addEventListener('click', () => {
+    component.getElement().remove();
+    component.removeElement();
+    body.classList.remove('hide-overflow');
+  });
 };
 
 generatePopup();
