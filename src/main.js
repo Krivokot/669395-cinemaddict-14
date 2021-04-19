@@ -7,8 +7,7 @@ import CardListView from './view/card-list.js';
 import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-
-import { renderElement, RenderPosition} from './utils.js';
+import { renderElement, RenderPosition, isEscEvent} from './utils.js';
 
 const CARDS_COUNT = 25;
 const CARDS_COUNT_PER_STEP = 5;
@@ -43,19 +42,33 @@ const generatePopup = () => {
     filmCardsNode[i].addEventListener('click', () => {
       renderElement (mainPageElement, cardPopupComponent.getElement(cards[i]), RenderPosition.BEFOREEND);
       body.classList.add('hide-overflow');
-      closePopup(cardPopupComponent);
+      closePopupByAction(cardPopupComponent);
     });
   };
 };
 
 const closePopup = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+  body.classList.remove('hide-overflow');
+}
+
+const closePopupByAction = (component) => {
     const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
 
     closePopupButton.addEventListener('click', () => {
-      component.getElement().remove();
-      component.removeElement();
-      body.classList.remove('hide-overflow');
+      closePopup();
     });
+
+    const closePopupByKey = (evt) => {
+      if (isEscEvent(evt)) {
+        evt.preventDefault();
+        closePopup(component);
+        document.removeEventListener('keydown', closePopupByKey)
+      }
+    }
+
+    document.addEventListener('keydown', closePopupByKey)
 };
 
 generatePopup();
