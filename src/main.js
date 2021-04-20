@@ -28,8 +28,8 @@ const filmsListElement = board.getElement().querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
 const renderCard = (cardListContainerElement, card) => {
-  const cardComponent = new CardView();
-  render(cardListContainerElement, cardComponent.getElement(card), RenderPosition.BEFOREEND);
+  const cardComponent = new CardView(card);
+  render(cardListContainerElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
 };
 
 if (cards.length > 0) {
@@ -44,9 +44,9 @@ const filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
 
 const generatePopup = () => {
   for (let i = 0; i < filmCardsNode.length; i++) {
-    const cardPopupComponent = new CardPopupView();
+    const cardPopupComponent = new CardPopupView(cards[i]);
     filmCardsNode[i].addEventListener('click', () => {
-      render (mainPageElement, cardPopupComponent.getElement(cards[i]), RenderPosition.BEFOREEND);
+      render (mainPageElement, cardPopupComponent.getElement(), RenderPosition.BEFOREEND);
       body.classList.add('hide-overflow');
       closePopupByAction(cardPopupComponent);
     });
@@ -63,7 +63,7 @@ const closePopupByAction = (component) => {
   const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
 
   closePopupButton.addEventListener('click', () => {
-    closePopup();
+    closePopup(component);
   });
 
   const closePopupByKey = (evt) => {

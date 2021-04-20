@@ -22,17 +22,18 @@ const createFilmCardTemplate = (card) => {
 };
 
 export default class Card {
-  constructor() {
+  constructor(card) {
     this._element = null;
+    this._card = card;
   }
 
-  getTemplate(card) {
-    return createFilmCardTemplate(card);
+  getTemplate() {
+    return createFilmCardTemplate(this._card);
   }
 
-  getElement(card) {
+  getElement() {
     if (!this._element) {
-      this._element = createElement(this.getTemplate(card));
+      this._element = createElement(this.getTemplate());
     }
 
     return this._element;
