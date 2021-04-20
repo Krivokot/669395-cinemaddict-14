@@ -7,7 +7,8 @@ import CardListView from './view/card-list.js';
 import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-import { render, RenderPosition, isEscEvent} from './utils.js';
+import { render, RenderPosition} from './utils/render.js';
+import {isEscEvent} from './utils/common.js';
 
 const CARDS_COUNT = 25;
 const CARDS_COUNT_PER_STEP = 5;
