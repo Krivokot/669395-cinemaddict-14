@@ -86,9 +86,7 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
 
   render(filmsListElement, showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
 
-  showMoreButtonComponent.getElement().addEventListener('click', (evt) => {
-
-    evt.preventDefault();
+  showMoreButtonComponent.setClickHandler(() => {
     cards
       .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
       .forEach((card) => renderCard (filmsListContainerElement, card));
