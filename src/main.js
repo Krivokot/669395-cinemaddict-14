@@ -18,14 +18,14 @@ const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
 
 const bodyElement = document.querySelector('body');
-const board = new CardListView();
+const boardElement = new CardListView();
 
 render (mainHeaderElement, new UserGradeView().getElement());
 render (mainPageElement, new SiteMenuView().getElement());
 render (mainPageElement, new SortMenuView().getElement());
-render (mainPageElement, new CardListView().getElement());
+render (mainPageElement, boardElement.getElement());
 
-const filmsListElement = board.getElement().querySelector('.films-list');
+const filmsListElement = boardElement.getElement().querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
 const renderCard = (cardListContainerElement, card) => {
@@ -58,7 +58,7 @@ const generatePopup = () => {
 const closePopup = (component) => {
   component.getElement().remove();
   component.removeElement();
-  body.classList.remove('hide-overflow');
+  bodyElement.classList.remove('hide-overflow');
 };
 
 const closePopupByAction = (component) => {
