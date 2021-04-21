@@ -47,11 +47,11 @@ const generatePopup = () => {
   filmCardsNode.forEach((card, index) => {
     const cardPopupComponent = new CardPopupView();
     card.addEventListener('click', () => {
-      renderElement (mainPageElement, cardPopupComponent.getElement(cards[index]));
+      render(mainPageElement, cardPopupComponent.getElement(cards[index]));
       bodyElement.classList.add('hide-overflow');
       closePopupByAction(cardPopupComponent);
     });
-  })
+  });
 };
 
 const closePopup = (component) => {
