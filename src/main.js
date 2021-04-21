@@ -41,12 +41,12 @@ if (cards.length > 0) {
   render (mainPageElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
 }
 
-const filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
+const сardsNode = filmsListContainerElement.querySelectorAll('.film-card');
 
 const generatePopup = () => {
-  for (let i = 0; i < filmCardsNode.length; i++) {
+  for (let i = 0; i < сardsNode.length; i++) {
     const cardPopupComponent = new CardPopupView(cards[i]);
-    filmCardsNode[i].addEventListener('click', () => {
+    сardsNode[i].addEventListener('click', () => {
       render (mainPageElement, cardPopupComponent.getElement(), RenderPosition.BEFOREEND);
       body.classList.add('hide-overflow');
       closePopupByAction(cardPopupComponent);
