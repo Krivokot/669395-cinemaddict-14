@@ -44,14 +44,14 @@ const generatePopup = () => {
 
   const filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
 
-  for (let i = 0; i < filmCardsNode.length; i++) {
+  filmCardsNode.forEach((card, index) => {
     const cardPopupComponent = new CardPopupView();
-    filmCardsNode[i].addEventListener('click', () => {
-      render (mainPageElement, cardPopupComponent.getElement(cards[i]));
+    card.addEventListener('click', () => {
+      renderElement (mainPageElement, cardPopupComponent.getElement(cards[index]));
       bodyElement.classList.add('hide-overflow');
       closePopupByAction(cardPopupComponent);
     });
-  }
+  })
 };
 
 const closePopup = (component) => {
