@@ -7,7 +7,7 @@ import CardListView from './view/card-list.js';
 import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-import { renderElement, RenderPosition} from './utils.js';
+import { renderElement } from './utils.js';
 
 const CARDS_COUNT = 25;
 const CARDS_COUNT_PER_STEP = 5;
@@ -16,12 +16,12 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
-const body = document.querySelector('body');
+const bodyElement = document.querySelector('body');
 
-renderElement (mainHeaderElement, new UserGradeView().getElement(), RenderPosition.BEFOREEND);
-renderElement (mainPageElement, new SiteMenuView().getElement(), RenderPosition.BEFOREEND);
-renderElement (mainPageElement, new SortMenuView().getElement(), RenderPosition.BEFOREEND);
-renderElement (mainPageElement, new CardListView().getElement(), RenderPosition.BEFOREEND);
+renderElement (mainHeaderElement, new UserGradeView().getElement());
+renderElement (mainPageElement, new SiteMenuView().getElement());
+renderElement (mainPageElement, new SortMenuView().getElement());
+renderElement (mainPageElement, new CardListView().getElement());
 
 const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
@@ -29,20 +29,21 @@ const filmsListContainerElement = filmsListElement.querySelector('.films-list__c
 
 if (cards.length > 0) {
   for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
-    renderElement (filmsListContainerElement, new CardView().getElement(cards[i]), RenderPosition.BEFOREEND);
+    renderElement (filmsListContainerElement, new CardView().getElement(cards[i]));
   }
 } else {
-  renderElement (mainPageElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
+  renderElement (mainPageElement, new EmptyListView().getElement());
 }
 
-let filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
-
 const generatePopup = () => {
+
+  const filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
+
   for (let i = 0; i < filmCardsNode.length; i++) {
     const cardPopupComponent = new CardPopupView();
     filmCardsNode[i].addEventListener('click', () => {
-      renderElement (mainPageElement, cardPopupComponent.getElement(cards[i]), RenderPosition.BEFOREEND);
-      body.classList.add('hide-overflow');
+      renderElement (mainPageElement, cardPopupComponent.getElement(cards[i]));
+      bodyElement.classList.add('hide-overflow');
       closePopup(cardPopupComponent);
     });
   }
@@ -54,7 +55,7 @@ const closePopup = (component) => {
   closePopupButton.addEventListener('click', () => {
     component.getElement().remove();
     component.removeElement();
-    body.classList.remove('hide-overflow');
+    bodyElement.classList.remove('hide-overflow');
   });
 };
 
@@ -64,14 +65,14 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
   let renderedCardCount = CARDS_COUNT_PER_STEP;
   const showMoreButtonComponent = new ShowMoreButtonView();
 
-  renderElement(filmsListElement, showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+  renderElement(filmsListElement, showMoreButtonComponent.getElement());
 
   showMoreButtonComponent.getElement().addEventListener('click', (evt) => {
 
     evt.preventDefault();
     cards
       .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
-      .forEach((card) => renderElement (filmsListContainerElement, new CardView().getElement(card), RenderPosition.BEFOREEND));
+      .forEach((card) => renderElement (filmsListContainerElement, new CardView().getElement(card)));
 
     renderedCardCount += CARDS_COUNT_PER_STEP;
 
@@ -80,7 +81,6 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
       showMoreButtonComponent.removeElement();
     }
 
-    filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
     generatePopup();
   });
 }
