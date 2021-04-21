@@ -16,7 +16,6 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
-
 const bodyElement = document.querySelector('body');
 const boardElement = new CardListView();
 
@@ -95,6 +94,7 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
     cards
       .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
       .forEach((card) => renderCard (filmsListContainerElement, card));
+
 
     renderedCardCount += CARDS_COUNT_PER_STEP;
 
