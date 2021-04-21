@@ -30,7 +30,7 @@ const filmsListContainerElement = filmsListElement.querySelector('.films-list__c
 
 const renderCard = (cardListContainerElement, card) => {
   const cardComponent = new CardView();
-  render(cardListContainerElement, cardComponent.getElement(card), RenderPosition.BEFOREEND);
+  render(cardListContainerElement, cardComponent.getElement(card));
 };
 
 if (cards.length > 0) {
@@ -38,7 +38,7 @@ if (cards.length > 0) {
     renderCard(filmsListContainerElement, cards[i]);
   }
 } else {
-  render (mainPageElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
+  render (mainPageElement, new EmptyListView().getElement());
 }
 
 const generatePopup = () => {
