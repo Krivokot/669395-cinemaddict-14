@@ -10,6 +10,6 @@ module.exports = {
   devServer: {
     contentBase: path.resolve(__dirname, 'public'),
     watchContentBase: true,
-    open: 'Google Chrome',
+    open: 'chrome',
   }
 }
