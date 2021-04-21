@@ -7,7 +7,7 @@ import CardListView from './view/card-list.js';
 import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-import { render, RenderPosition} from './utils/render.js';
+import { render } from './utils/render.js';
 import {isEscEvent} from './utils/common.js';
 
 const CARDS_COUNT = 25;
@@ -17,21 +17,20 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
-
 const bodyElement = document.querySelector('body');
-const boardElement = new CardListView();
+// const boardElement = new CardListView();
 
 render (mainHeaderElement, new UserGradeView().getElement());
 render (mainPageElement, new SiteMenuView().getElement());
 render (mainPageElement, new SortMenuView().getElement());
-render (mainPageElement, boardElement.getElement());
+render (mainPageElement, new CardListView().getElement());
 
-const filmsListElement = boardElement.getElement().querySelector('.films-list');
+const filmsListElement = mainPageElement.querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
 const renderCard = (cardListContainerElement, card) => {
   const cardComponent = new CardView(card);
-  render(cardListContainerElement, cardComponent.getElement(), RenderPosition.BEFOREEND);
+  render(cardListContainerElement, cardComponent.getElement());
 };
 
 if (cards.length > 0) {
@@ -39,20 +38,21 @@ if (cards.length > 0) {
     renderCard(filmsListContainerElement, cards[i]);
   }
 } else {
-  render (mainPageElement, new EmptyListView().getElement(), RenderPosition.BEFOREEND);
+  render (mainPageElement, new EmptyListView().getElement());
 }
 
-const сardsNode = filmsListContainerElement.querySelectorAll('.film-card');
-
 const generatePopup = () => {
-  for (let i = 0; i < сardsNode.length; i++) {
-    const cardPopupComponent = new CardPopupView(cards[i]);
-    сardsNode[i].addEventListener('click', () => {
-      render (mainPageElement, cardPopupComponent.getElement(), RenderPosition.BEFOREEND);
-      body.classList.add('hide-overflow');
+
+  const filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
+
+  filmCardsNode.forEach((card, index) => {
+    const cardPopupComponent = new CardPopupView(cards[index]);
+    card.addEventListener('click', () => {
+      render(mainPageElement, cardPopupComponent.getElement());
+      bodyElement.classList.add('hide-overflow');
       closePopupByAction(cardPopupComponent);
     });
-  }
+  });
 };
 
 const closePopup = (component) => {
@@ -85,12 +85,14 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
   let renderedCardCount = CARDS_COUNT_PER_STEP;
   const showMoreButtonComponent = new ShowMoreButtonView();
 
-  render(filmsListElement, showMoreButtonComponent.getElement(), RenderPosition.BEFOREEND);
+  render(filmsListElement, showMoreButtonComponent.getElement());
 
   showMoreButtonComponent.setClickHandler(() => {
+
     cards
       .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
       .forEach((card) => renderCard (filmsListContainerElement, card));
+
 
     renderedCardCount += CARDS_COUNT_PER_STEP;
 
@@ -98,6 +100,8 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
       showMoreButtonComponent.getElement().remove();
       showMoreButtonComponent.removeElement();
     }
+
+    generatePopup();
   });
 }
 
