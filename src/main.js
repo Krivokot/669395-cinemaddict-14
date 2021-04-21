@@ -46,7 +46,7 @@ const generatePopup = () => {
       bodyElement.classList.add('hide-overflow');
       closePopup(cardPopupComponent);
     });
-  })
+  });
 };
 
 const closePopup = (component) => {
