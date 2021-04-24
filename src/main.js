@@ -7,7 +7,7 @@ import CardListView from './view/card-list.js';
 import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-import { renderElement } from './utils.js';
+import { render,  isEscEvent} from './utils.js';
 
 const CARDS_COUNT = 25;
 const CARDS_COUNT_PER_STEP = 5;
@@ -17,22 +17,27 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
 const bodyElement = document.querySelector('body');
+const boardElement = new CardListView();
 
-renderElement (mainHeaderElement, new UserGradeView().getElement());
-renderElement (mainPageElement, new SiteMenuView().getElement());
-renderElement (mainPageElement, new SortMenuView().getElement());
-renderElement (mainPageElement, new CardListView().getElement());
+render (mainHeaderElement, new UserGradeView().getElement());
+render (mainPageElement, new SiteMenuView().getElement());
+render (mainPageElement, new SortMenuView().getElement());
+render (mainPageElement, boardElement.getElement());
 
-const filmsListElement = mainPageElement.querySelector('.films-list');
+const filmsListElement = boardElement.getElement().querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
+const renderCard = (cardListContainerElement, card) => {
+  const cardComponent = new CardView();
+  render(cardListContainerElement, cardComponent.getElement(card));
+};
 
 if (cards.length > 0) {
   for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
-    renderElement (filmsListContainerElement, new CardView().getElement(cards[i]));
+    renderCard(filmsListContainerElement, cards[i]);
   }
 } else {
-  renderElement (mainPageElement, new EmptyListView().getElement());
+  render (mainPageElement, new EmptyListView().getElement());
 }
 
 const generatePopup = () => {
@@ -42,14 +47,20 @@ const generatePopup = () => {
   filmCardsNode.forEach((card, index) => {
     const cardPopupComponent = new CardPopupView();
     card.addEventListener('click', () => {
-      renderElement (mainPageElement, cardPopupComponent.getElement(cards[index]));
+      render(mainPageElement, cardPopupComponent.getElement(cards[index]));
       bodyElement.classList.add('hide-overflow');
-      closePopup(cardPopupComponent);
+      closePopupByAction(cardPopupComponent);
     });
   });
 };
 
 const closePopup = (component) => {
+  component.getElement().remove();
+  component.removeElement();
+  bodyElement.classList.remove('hide-overflow');
+};
+
+const closePopupByAction = (component) => {
   const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
 
   closePopupButton.addEventListener('click', () => {
@@ -57,6 +68,16 @@ const closePopup = (component) => {
     component.removeElement();
     bodyElement.classList.remove('hide-overflow');
   });
+
+  const closePopupByKey = (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      closePopup(component);
+      document.removeEventListener('keydown', closePopupByKey);
+    }
+  };
+
+  document.addEventListener('keydown', closePopupByKey);
 };
 
 generatePopup();
@@ -65,14 +86,15 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
   let renderedCardCount = CARDS_COUNT_PER_STEP;
   const showMoreButtonComponent = new ShowMoreButtonView();
 
-  renderElement(filmsListElement, showMoreButtonComponent.getElement());
+  render(filmsListElement, showMoreButtonComponent.getElement());
 
   showMoreButtonComponent.getElement().addEventListener('click', (evt) => {
 
     evt.preventDefault();
     cards
       .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
-      .forEach((card) => renderElement (filmsListContainerElement, new CardView().getElement(card)));
+      .forEach((card) => renderCard (filmsListContainerElement, card));
+
 
     renderedCardCount += CARDS_COUNT_PER_STEP;
 
