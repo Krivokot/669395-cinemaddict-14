@@ -18,14 +18,14 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
 const bodyElement = document.querySelector('body');
-const boardElement = new CardListView();
+const cardListElement = new CardListView();
 
 render (mainHeaderElement, new UserGradeView().getElement());
 render (mainPageElement, new SiteMenuView().getElement());
 render (mainPageElement, new SortMenuView().getElement());
-render (mainPageElement, boardElement.getElement());
+render (mainPageElement, cardListElement.getElement());
 
-const filmsListElement = boardElement.getElement().querySelector('.films-list');
+const filmsListElement = cardListElement.getElement().querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
 const renderCard = (cardListContainerElement, card) => {
