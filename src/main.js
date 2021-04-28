@@ -7,7 +7,8 @@ import CardListView from './view/card-list.js';
 import EmptyListView from './view/no-card-list.js';
 import { generateCard } from './mock/card-mock.js';
 import SortMenuView from './view/sort.js';
-import { render,  isEscEvent} from './utils.js';
+import { render } from './utils/render.js';
+import {isEscEvent} from './utils/common.js';
 
 const CARDS_COUNT = 25;
 const CARDS_COUNT_PER_STEP = 5;
@@ -17,19 +18,19 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
 const bodyElement = document.querySelector('body');
-const boardElement = new CardListView();
+const cardListElement = new CardListView();
 
 render (mainHeaderElement, new UserGradeView().getElement());
 render (mainPageElement, new SiteMenuView().getElement());
 render (mainPageElement, new SortMenuView().getElement());
-render (mainPageElement, boardElement.getElement());
+render (mainPageElement, cardListElement.getElement());
 
-const filmsListElement = boardElement.getElement().querySelector('.films-list');
+const filmsListElement = cardListElement.getElement().querySelector('.films-list');
 const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
 const renderCard = (cardListContainerElement, card) => {
-  const cardComponent = new CardView();
-  render(cardListContainerElement, cardComponent.getElement(card));
+  const cardComponent = new CardView(card);
+  render(cardListContainerElement, cardComponent.getElement());
 };
 
 if (cards.length > 0) {
@@ -45,9 +46,9 @@ const generatePopup = () => {
   const filmCardsNode = filmsListContainerElement.querySelectorAll('.film-card');
 
   filmCardsNode.forEach((card, index) => {
-    const cardPopupComponent = new CardPopupView();
+    const cardPopupComponent = new CardPopupView(cards[index]);
     card.addEventListener('click', () => {
-      render(mainPageElement, cardPopupComponent.getElement(cards[index]));
+      render(mainPageElement, cardPopupComponent.getElement());
       bodyElement.classList.add('hide-overflow');
       closePopupByAction(cardPopupComponent);
     });
@@ -64,9 +65,7 @@ const closePopupByAction = (component) => {
   const closePopupButton =  component.getElement().querySelector('.film-details__close-btn');
 
   closePopupButton.addEventListener('click', () => {
-    component.getElement().remove();
-    component.removeElement();
-    bodyElement.classList.remove('hide-overflow');
+    closePopup(component);
   });
 
   const closePopupByKey = (evt) => {
@@ -88,9 +87,8 @@ if (cards.length > CARDS_COUNT_PER_STEP) {
 
   render(filmsListElement, showMoreButtonComponent.getElement());
 
-  showMoreButtonComponent.getElement().addEventListener('click', (evt) => {
+  showMoreButtonComponent.setClickHandler(() => {
 
-    evt.preventDefault();
     cards
       .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
       .forEach((card) => renderCard (filmsListContainerElement, card));

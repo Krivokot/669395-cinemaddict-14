@@ -1,4 +1,4 @@
-import {createElement} from '../utils.js';
+import AbstractView from './abstract.js';
 
 const createFilmInfoPopupTemplate = (card) => {
   const { film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} } } = card;
@@ -123,25 +123,14 @@ const createFilmInfoPopupTemplate = (card) => {
 </section>`;
 };
 
-export default class CardPopup {
-  constructor() {
-    this._element = null;
+export default class CardPopup extends AbstractView {
+  constructor(card) {
+    super();
+    this._card = card;
   }
 
-  getTemplate(card) {
-    return createFilmInfoPopupTemplate(card);
-  }
-
-  getElement(card) {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate(card));
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
+  getTemplate() {
+    return createFilmInfoPopupTemplate(this._card);
   }
 }
 
