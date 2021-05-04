@@ -9,7 +9,7 @@ import { generateCard } from './mock/card-mock.js';
 import { render } from './utils/render.js';
 
 
-const CARDS_COUNT = 1;
+const CARDS_COUNT = 25;
 
 const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 

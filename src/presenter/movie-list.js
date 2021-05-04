@@ -1,9 +1,9 @@
-import CardView from '../view/card.js';
 import ShowMoreButtonView from '../view/show-button.js';
 import CardListView from '../view/card-list.js';
 import EmptyListView from '../view/no-card-list.js';
 import SortMenuView from '../view/sort.js';
 import { render } from '../utils/render.js';
+import MoviePresenter from './movie.js'
 
 
 const CARDS_COUNT_PER_STEP = 5;
@@ -12,7 +12,6 @@ export default class MovieList {
   constructor(main) {
     this._main = main;
 
-    this._cardComponent = new CardView();
     this._sortComponent = new SortMenuView();
     this._cardListComponent = new CardListView();
     this._noCardsComponent = new EmptyListView();
@@ -20,7 +19,6 @@ export default class MovieList {
   }
 
   init(card) {
-  
     this._renderMovieList(card);
   }
 
@@ -28,14 +26,16 @@ export default class MovieList {
     render(this._main, this._sortComponent.getElement());
   }
 
-  _renderCard(card) {
-    console.log(card);
+  _renderCard(cards) {
     const filmsListElement = this._cardListComponent.getElement().querySelector('.films-list');
     const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
-    for (let i = 0; i > card.length; i++) {
-      render(filmsListContainerElement, this._cardComponent(card[i]).getElement());
+
+    for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
+      const moviePresenter = new MoviePresenter(filmsListContainerElement, cards[i]);
+      moviePresenter.init();
     }
-    
+
+
   }
 
   _renderCardList() {
@@ -51,34 +51,40 @@ export default class MovieList {
 
     cards
     .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
-    .forEach((card) => this._renderCard);
+    .forEach((card) => this._renderCard(card));
 
 
     renderedCardCount += CARDS_COUNT_PER_STEP;
 
     if (renderedCardCount >= cards.length) {
-      this._showMoreButtonComponent.getElement().remove();
       this._showMoreButtonComponent.removeElement();
-    } 
+    }
   }
 
-  _renderShowMoreButton(card) {
+  _renderShowMoreButton(cards) {
     const filmsListElement = this._cardListComponent.getElement().querySelector('.films-list');
 
     render(filmsListElement, this._showMoreButtonComponent.getElement());
 
-    this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick(card));
+    this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick(cards));
+
   }
 
-  _renderMovieList(card) {
-    this._renderSort();
-    this._renderCardList();
-    this._renderShowMoreButton(card);
+  _renderMovieList(cards) {
 
-    if (card.length > 0) {
-      this._renderCard(card);
+    this._renderCardList();
+
+    if (cards.length > 0) {
+      this._renderCard(cards);
     } else {
       this._renderNoCards();
     }
+
+    this._renderShowMoreButton(cards);
+
+    this._renderSort();
+
+
+
   }
 }
