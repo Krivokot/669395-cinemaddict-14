@@ -10,7 +10,6 @@ import { isEscEvent } from '../utils/common.js';
 
 
 const CARDS_COUNT_PER_STEP = 5;
-let renderedCardCount = CARDS_COUNT_PER_STEP;
 const bodyElement = document.querySelector('body');
 
 export default class MovieList {
@@ -22,11 +21,13 @@ export default class MovieList {
     this._noCardsComponent = new EmptyListView();
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._cardContainerComponent = new CardContainerView();
+    this._renderedCardCount = CARDS_COUNT_PER_STEP;
   }
 
 
   init(cards) {
     this._cards = cards.slice();
+    this._renderSort();
     render(this._main, this._cardListComponent);
     const filmsContainerElement = this._cardListComponent.getElement().querySelector('.films-list');
 
@@ -89,16 +90,10 @@ export default class MovieList {
 
   _handleShowMoreButtonClick() {
 
-  this._cards
-    .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
-    .forEach((card) => {
-      this._renderCard(card)
-    });
+    this._renderCards(this._renderedCardCount, this._renderedCardCount + CARDS_COUNT_PER_STEP);
+    this._renderedCardCount += CARDS_COUNT_PER_STEP;
 
-
-    renderedCardCount += CARDS_COUNT_PER_STEP;
-
-    if (renderedCardCount >= this._cards.length) {
+    if (this._renderedCardCount >= this._cards.length) {
       this._showMoreButtonComponent.getElement().remove();
       this._showMoreButtonComponent.removeElement();
     }
@@ -125,7 +120,7 @@ export default class MovieList {
       this._renderNoCards();
     }
 
-    this._renderSort();
+
     this._renderCardList();
 
   }
