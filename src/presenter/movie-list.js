@@ -3,10 +3,15 @@ import CardListView from '../view/card-list.js';
 import EmptyListView from '../view/no-card-list.js';
 import SortMenuView from '../view/sort.js';
 import { render } from '../utils/render.js';
-import MoviePresenter from './movie.js'
+import CardView from '../view/card.js';
+import CardContainerView from '../view/card-container.js';
+import CardPopupView from '../view/card-popup';
+import { isEscEvent } from '../utils/common.js';
 
 
 const CARDS_COUNT_PER_STEP = 5;
+let renderedCardCount = CARDS_COUNT_PER_STEP;
+const bodyElement = document.querySelector('body');
 
 export default class MovieList {
   constructor(main) {
@@ -16,75 +21,112 @@ export default class MovieList {
     this._cardListComponent = new CardListView();
     this._noCardsComponent = new EmptyListView();
     this._showMoreButtonComponent = new ShowMoreButtonView();
+    this._cardContainerComponent = new CardContainerView();
   }
 
-  init(card) {
-    this._renderMovieList(card);
+
+  init(cards) {
+    this._cards = cards.slice();
+    render(this._main, this._cardListComponent);
+    const filmsContainerElement = this._cardListComponent.getElement().querySelector('.films-list');
+
+    render(filmsContainerElement, this._cardContainerComponent);
+
+    this._renderMovieList(this._cards);
   }
 
   _renderSort() {
-    render(this._main, this._sortComponent.getElement());
+    render(this._main, this._sortComponent);
   }
 
   _renderCard(cards) {
-    const filmsListElement = this._cardListComponent.getElement().querySelector('.films-list');
-    const filmsListContainerElement = filmsListElement.querySelector('.films-list__container');
 
-    for (let i = 0; i < Math.min(cards.length, CARDS_COUNT_PER_STEP); i++) {
-      const moviePresenter = new MoviePresenter(filmsListContainerElement, cards[i]);
-      moviePresenter.init();
-    }
+    const cardComponent = new CardView(cards);
 
+    cardComponent.setClickHandler(() => {
+      this._renderPopup(cards)
+    })
 
+    render(this._cardContainerComponent, cardComponent);
   }
 
-  _renderCardList() {
-    render(this._main, this._cardListComponent.getElement());
+  _renderCards(from, to) {
+    this._cards
+      .slice(from, to)
+      .forEach((card) => this._renderCard(card))
+  }
+
+  _renderPopup(cards) {
+    const cardPopupComponent = new CardPopupView(cards);
+    render(this._main, cardPopupComponent.getElement());
+    bodyElement.classList.add('hide-overflow');
+
+    const closePopup = () => {
+      cardPopupComponent.getElement().remove();
+      cardPopupComponent.removeElement();
+      bodyElement.classList.remove('hide-overflow');
+    }
+
+    cardPopupComponent.setButtonCloseClickHandler(() => {
+      closePopup();
+    })
+
+    const closePopupByKey = (evt) => {
+      if (isEscEvent(evt)) {
+        evt.preventDefault();
+        closePopup();
+        document.removeEventListener('keydown', closePopupByKey);
+      }
+
+    document.addEventListener('keydown', closePopupByKey);
+    };
+
   }
 
   _renderNoCards() {
     render(this._main, this._noCardsComponent.getElement());
   }
 
-  _handleShowMoreButtonClick(cards) {
-  let renderedCardCount = CARDS_COUNT_PER_STEP;
+  _handleShowMoreButtonClick() {
 
-    cards
+  this._cards
     .slice(renderedCardCount, renderedCardCount + CARDS_COUNT_PER_STEP)
-    .forEach((card) => this._renderCard(card));
+    .forEach((card) => {
+      this._renderCard(card)
+    });
 
 
     renderedCardCount += CARDS_COUNT_PER_STEP;
 
-    if (renderedCardCount >= cards.length) {
+    if (renderedCardCount >= this._cards.length) {
+      this._showMoreButtonComponent.getElement().remove();
       this._showMoreButtonComponent.removeElement();
     }
   }
 
-  _renderShowMoreButton(cards) {
-    const filmsListElement = this._cardListComponent.getElement().querySelector('.films-list');
+  _renderShowMoreButton() {
+    render(this._cardListComponent, this._showMoreButtonComponent);
 
-    render(filmsListElement, this._showMoreButtonComponent.getElement());
-
-    this._showMoreButtonComponent.setClickHandler(this._handleShowMoreButtonClick(cards));
-
+    this._showMoreButtonComponent.setClickHandler(() => {
+      this._handleShowMoreButtonClick(this._cards);
+    });
   }
 
-  _renderMovieList(cards) {
+  _renderCardList() {
+    this._renderCards(0, Math.min(this._cards.length, CARDS_COUNT_PER_STEP));
 
-    this._renderCardList();
+    if (this._cards.length > CARDS_COUNT_PER_STEP) {
+      this._renderShowMoreButton();
+    }
+  }
 
-    if (cards.length > 0) {
-      this._renderCard(cards);
-    } else {
+  _renderMovieList() {
+    if (this._cards.length <= 0) {
       this._renderNoCards();
     }
 
-    this._renderShowMoreButton(cards);
-
     this._renderSort();
-
-
+    this._renderCardList();
 
   }
 }

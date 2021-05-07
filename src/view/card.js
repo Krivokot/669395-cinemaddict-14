@@ -2,7 +2,8 @@ import AbstractView from './abstract.js';
 
 const createFilmCardTemplate = (card) => {
   const { film_info: {title, poster, description, total_rating} } = card;
-  return `<article class="film-card">
+  return `
+          <article class="film-card">
           <h3 class="film-card__title">${title}</h3>
           <p class="film-card__rating">${total_rating}</p>
           <p class="film-card__info">
@@ -18,7 +19,8 @@ const createFilmCardTemplate = (card) => {
             <button class="film-card__controls-item button film-card__controls-item--mark-as-watched" type="button">Mark as watched</button>
             <button class="film-card__controls-item button film-card__controls-item--favorite" type="button">Mark as favorite</button>
           </div>
-        </article>`;
+        </article>
+        </div>`;
 };
 
 export default class Card extends AbstractView {
