@@ -2,9 +2,10 @@ import ShowMoreButtonView from '../view/show-button.js';
 import CardListView from '../view/card-list.js';
 import EmptyListView from '../view/no-card-list.js';
 import SortMenuView from '../view/sort.js';
-import { render } from '../utils/render.js';
+import { render, remove } from '../utils/render.js';
 import CardContainerView from '../view/card-container.js';
 import CardPresenter from './movie.js';
+import { updateItem } from '../utils/common.js';
 
 const CARDS_COUNT_PER_STEP = 5;
 
@@ -18,6 +19,7 @@ export default class MovieList {
     this._showMoreButtonComponent = new ShowMoreButtonView();
     this._cardContainerComponent = new CardContainerView();
     this._renderedCardCount = CARDS_COUNT_PER_STEP;
+    this._cardPresenter = {};
 
   }
 
@@ -28,10 +30,22 @@ export default class MovieList {
 
     render(this._main, this._cardListComponent);
     const filmsContainerElement = this._cardListComponent.getElement().querySelector('.films-list');
-
     render(filmsContainerElement, this._cardContainerComponent);
 
+    this._handleModeChange = this._handleModeChange.bind(this);
+
     this._renderMovieList(this._cards);
+  }
+
+  _handleCardChange(updatedCard) {
+    this._cards = updateItem(this._cards, updatedCard);
+    this._cardPresenter[updatedCard.id].init(updatedCard);
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._cardPresenter)
+      .forEach((presenter) => presenter.resetView());
   }
 
   _renderSort() {
@@ -40,9 +54,19 @@ export default class MovieList {
 
   _renderCard(cards) {
 
-    const cardPresenter = new CardPresenter(this._cardContainerComponent, this._main);
+    const cardPresenter = new CardPresenter(this._cardContainerComponent, this._main, this._handleCardChange, this._handleModeChange);
     cardPresenter.init(cards);
+    this._cardPresenter[cards.id] = cardPresenter;
 
+  }
+
+  _clearCardList() {
+    Object
+      .values(this._cardPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._cardPresenter = {};
+    this._renderedCardCount = CARDS_COUNT_PER_STEP;
+    remove(this._showMoreButtonComponent);
   }
 
   _renderCards(from, to) {
@@ -61,8 +85,7 @@ export default class MovieList {
     this._renderedCardCount += CARDS_COUNT_PER_STEP;
 
     if (this._renderedCardCount >= this._cards.length) {
-      this._showMoreButtonComponent.getElement().remove();
-      this._showMoreButtonComponent.removeElement();
+      remove(this._showMoreButtonComponent);
     }
   }
 

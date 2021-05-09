@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 import {getRandomInt} from '../utils/common.js';
 
 const titles = [
@@ -107,7 +108,7 @@ const generateComment = () => {
 
 export const generateCard = () => {
   return {
-    id: getRandomInt(1000),
+    id: nanoid(),
     comments: generateComment(),
     film_info: {
       title: generateRandomValue(titles),
