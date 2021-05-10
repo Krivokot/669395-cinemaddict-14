@@ -69,18 +69,20 @@ export default class Movie {
   }
 
   _handleWatchListClick() {
+    this._cardComponent.getElement().querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
     this._changeData(
       Object.assign(
         {},
-        this._cards.user_details,
+        this._cards,
         {
-          watchlist: !this._cards.user_details.watchlist,
+          watchlist: !this._cards.watchlist,
         },
       ),
     );
   }
 
   _handleFavoritesClick() {
+    this._cardComponent.getElement().querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');
     this._changeData(
       Object.assign(
         {},
@@ -93,6 +95,7 @@ export default class Movie {
   }
 
   _handleHistoryClick() {
+    this._cardComponent.getElement().querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
     this._changeData(
       Object.assign(
         {},
