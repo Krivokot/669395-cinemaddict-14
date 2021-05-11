@@ -44,10 +44,7 @@ export default class Movie {
     this._cardComponent.setWatchListClickHandler(this._handleWatchListClick);
     this._cardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardComponent.setFavoritesClickHandler(this._handleFavoritesClick);
-    this._cardPopupComponent.setButtonCloseClickHandler(this._handleCloseButtonClick);
-    this._cardPopupComponent.setWatchListClickHandler(this._handleWatchListClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
-    this._cardPopupComponent.setFavoritesClickHandler(this._handleFavoritesClick);
+
 
     if (prevCardComponent === null || prevCardPopupComponent === null) {
       render(this._cardListContainer, this._cardComponent);
@@ -64,7 +61,21 @@ export default class Movie {
     remove(this._cardPopupComponent);
   }
 
+  resetView() {
+    if (this._mode !== Mode.DEFAULT) {
+      this._closePopup();
+    }
+  }
+
   _handleCardClick() {
+
+    document.addEventListener('keydown', this._escKeyDownHandler);
+
+    this._cardPopupComponent.setButtonCloseClickHandler(this._handleCloseButtonClick);
+    this._cardPopupComponent.setWatchListClickHandler(this._handleWatchListClick);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._cardPopupComponent.setFavoritesClickHandler(this._handleFavoritesClick);
+
     this._renderPopup();
   }
 
@@ -115,6 +126,8 @@ export default class Movie {
   _closePopup() {
     remove(this._cardPopupComponent);
     bodyElement.classList.remove('hide-overflow');
+    document.removeEventListener('keydown', this._escKeyDownHandler);
+    this._mode = Mode.DEFAULT;
   }
 
   _handleCloseButtonClick() {
@@ -125,10 +138,7 @@ export default class Movie {
     if (isEscEvent(evt)) {
       evt.preventDefault();
       this._closePopup();
-      document.removeEventListener('keydown', this._escKeyDownHandler);
     }
-
-    document.addEventListener('keydown', this._escKeyDownHandler);
   }
 }
 
