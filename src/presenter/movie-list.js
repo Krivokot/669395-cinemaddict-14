@@ -90,7 +90,8 @@ export default class MovieList {
   }
 
   _renderShowMoreButton() {
-    render(this._cardListComponent, this._showMoreButtonComponent);
+    const filmsContainerElement = this._cardListComponent.getElement().querySelector('.films-list');
+    render(filmsContainerElement, this._showMoreButtonComponent);
 
     this._showMoreButtonComponent.setClickHandler(() => {
       this._handleShowMoreButtonClick(this._cards);
@@ -109,7 +110,6 @@ export default class MovieList {
     if (this._cards.length <= 0) {
       this._renderNoCards();
     }
-
 
     this._renderCardList();
 
