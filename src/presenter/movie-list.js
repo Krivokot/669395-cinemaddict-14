@@ -72,7 +72,7 @@ export default class MovieList {
   _renderCards(from, to) {
     this._cards
       .slice(from, to)
-      .forEach((card) => this._renderCard(card))
+      .forEach((card) => this._renderCard(card));
   }
 
   _renderNoCards() {

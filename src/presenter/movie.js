@@ -110,7 +110,7 @@ export default class Movie {
   _renderPopup() {
     render(this._mainPageContainer, this._cardPopupComponent);
     bodyElement.classList.add('hide-overflow');
-    }
+  }
 
   _closePopup() {
     remove(this._cardPopupComponent);
