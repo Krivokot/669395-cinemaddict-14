@@ -35,8 +35,8 @@ const posters = [
 ];
 
 const booleans = [
-  'true',
-  'false',
+  true,
+  false,
 ];
 
 const descriptions = [

@@ -1,7 +1,7 @@
 import AbstractView from './abstract.js';
 
 const createFilmInfoPopupTemplate = (card) => {
-  const { film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} } } = card;
+  const { film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} }, user_details: {watchlist, already_watched, favorite} } = card;
 
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -69,13 +69,13 @@ const createFilmInfoPopupTemplate = (card) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${watchlist ? 'checked' : ''} id="watchlist" name="watchlist">
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${already_watched ? 'checked' : ''} id="watched" name="watched">
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${favorite ? 'checked' : ''} id="favorite" name="favorite">
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>

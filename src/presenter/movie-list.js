@@ -6,6 +6,8 @@ import { render, remove } from '../utils/render.js';
 import CardContainerView from '../view/card-container.js';
 import CardPresenter from './movie.js';
 import { updateItem } from '../utils/common.js';
+import {sortCardUp} from '../utils/card.js';
+import {SortType} from '../const.js';
 
 const CARDS_COUNT_PER_STEP = 5;
 
@@ -25,6 +27,7 @@ export default class MovieList {
 
   init(cards) {
     this._cards = cards.slice();
+    this._sourcedCardList = cards.slice();
 
     this._renderSort();
 
@@ -33,12 +36,15 @@ export default class MovieList {
     render(filmsContainerElement, this._cardContainerComponent);
 
     this._handleModeChange = this._handleModeChange.bind(this);
+    this._handleCardChange = this._handleCardChange.bind(this);
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._renderMovieList(this._cards);
   }
 
   _handleCardChange(updatedCard) {
     this._cards = updateItem(this._cards, updatedCard);
+    this._sourcedCardList = updateItem(this._sourcedCardList, updatedCard);
     this._cardPresenter[updatedCard.id].init(updatedCard);
   }
 
@@ -48,8 +54,29 @@ export default class MovieList {
       .forEach((presenter) => presenter.resetView());
   }
 
+  _sortCards(sortType) {
+    switch (sortType) {
+      case SortType.DATE_UP:
+        this._cards.sort(sortCardUp);
+        break;
+      default:
+        this._cards = this._sourcedCardList.slice();
+    }
+
+    this._currentSortType = sortType;
+  }
+
+  _handleSortTypeChange(sortType) {
+    if (this._currentSortType === sortType) {
+      return;
+    }
+
+    this._sortCards(sortType);
+  }
+
   _renderSort() {
     render(this._main, this._sortComponent);
+    this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
   _renderCard(cards) {

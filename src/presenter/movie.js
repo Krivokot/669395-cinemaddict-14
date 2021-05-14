@@ -45,14 +45,13 @@ export default class Movie {
     this._cardComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardComponent.setFavoritesClickHandler(this._handleFavoritesClick);
 
-
     if (prevCardComponent === null || prevCardPopupComponent === null) {
       render(this._cardListContainer, this._cardComponent);
       return;
     }
 
-    remove(prevCardComponent);
-    remove(prevCardPopupComponent);
+    // remove(prevCardComponent);
+    // remove(prevCardPopupComponent);
 
   }
 
@@ -103,9 +102,9 @@ export default class Movie {
     this._changeData(
       Object.assign(
         {},
-        this._cards.user_details,
+        this._cards,
         {
-          favorite: !this._cards.user_details.favorite,
+          favorite: !this._cards.favorite,
         },
       ),
     );
@@ -116,9 +115,9 @@ export default class Movie {
     this._changeData(
       Object.assign(
         {},
-        this._cards.user_details,
+        this._cards,
         {
-          already_watched: !this._cards.user_details.already_watched,
+          already_watched: !this._cards.already_watched,
         },
       ),
     );
@@ -127,6 +126,7 @@ export default class Movie {
   _renderPopup() {
     render(this._mainPageContainer, this._cardPopupComponent);
     bodyElement.classList.add('hide-overflow');
+    this._mode = Mode.EDITING;
   }
 
   _closePopup() {

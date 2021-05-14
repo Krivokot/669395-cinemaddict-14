@@ -11,6 +11,7 @@ const cards = new Array(CARDS_COUNT).fill().map(generateCard);
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
 const footerStatisticElement = document.querySelector('.footer__statistics');
+
 if (cards.length === 1) {
   footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movie inside</p>`)
 } else {
