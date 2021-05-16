@@ -80,10 +80,10 @@ export default class Movie {
 
   _handleWatchListClick() {
     this._cardComponent.getElement().querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
-    if (this._cardPopupComponent.getElement().querySelector('#watchlist').checked = 'false') {
-      this._cardPopupComponent.getElement().querySelector('#watchlist').checked = 'true'
+    if (this._cardPopupComponent.getElement().querySelector('#watchlist').checked === 'false') {
+      this._cardPopupComponent.getElement().querySelector('#watchlist').checked = 'true';
     } else {
-      this._cardPopupComponent.getElement().querySelector('#watchlist').checked = 'false'
+      this._cardPopupComponent.getElement().querySelector('#watchlist').checked = 'false';
     }
 
     this._changeData(
