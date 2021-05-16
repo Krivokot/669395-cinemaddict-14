@@ -15,6 +15,8 @@ export default class MovieList {
   constructor(main) {
     this._main = main;
 
+    this._currentSortType = SortType.DEFAULT;
+
     this._sortComponent = new SortMenuView();
     this._cardListComponent = new CardListView();
     this._noCardsComponent = new EmptyListView();
@@ -22,6 +24,7 @@ export default class MovieList {
     this._cardContainerComponent = new CardContainerView();
     this._renderedCardCount = CARDS_COUNT_PER_STEP;
     this._cardPresenter = {};
+
 
   }
 
@@ -64,6 +67,7 @@ export default class MovieList {
     }
 
     this._currentSortType = sortType;
+
   }
 
   _handleSortTypeChange(sortType) {
@@ -72,6 +76,8 @@ export default class MovieList {
     }
 
     this._sortCards(sortType);
+    this._clearCardList();
+    this._renderCardList();
   }
 
   _renderSort() {
