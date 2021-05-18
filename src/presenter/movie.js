@@ -50,8 +50,8 @@ export default class Movie {
       return;
     }
 
-    // remove(prevCardComponent);
-    // remove(prevCardPopupComponent);
+    remove(prevCardComponent);
+    remove(prevCardPopupComponent);
 
   }
 
@@ -80,52 +80,26 @@ export default class Movie {
 
   _handleWatchListClick() {
     this._cardComponent.getElement().querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
-    // if (this._cardPopupComponent.getElement().querySelector('#watchlist').checked === 'false') {
-    //   this._cardPopupComponent.getElement().querySelector('#watchlist').checked = 'true';
-    // } else {
-    //   this._cardPopupComponent.getElement().querySelector('#watchlist').checked = 'false';
-    // }
 
-    this._changeData(
-      Object.assign(
-        {},
-        this._cards,
-        {
-          watchlist: !this._cards.watchlist,
-        },
-      ),
-    );
+    const newCard = JSON.parse(JSON.stringify(this._cards));
+    newCard.user_details.watchlist = !newCard.user_details.watchlist;
+    this._changeData(newCard);
+
   }
 
   _handleFavoritesClick() {
     this._cardComponent.getElement().querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');
-    // if (this._cardPopupComponent.getElement().querySelector('#favorite').checked === 'false') {
-    //   this._cardPopupComponent.getElement().querySelector('#favorite').checked = 'true';
-    // } else {
-    //   this._cardPopupComponent.getElement().querySelector('#favorite').checked = 'false';
-    // }
-    this._changeData(
-      Object.assign(
-        {},
-        this._cards,
-        {
-          favorite: !this._cards.favorite,
-        },
-      ),
-    );
+
+    const newCard = JSON.parse(JSON.stringify(this._cards));
+    newCard.user_details.favorite = !newCard.user_details.favorite;
+    this._changeData(newCard);
   }
 
   _handleHistoryClick() {
     this._cardComponent.getElement().querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
-    this._changeData(
-      Object.assign(
-        {},
-        this._cards,
-        {
-          already_watched: !this._cards.already_watched,
-        },
-      ),
-    );
+    const newCard = JSON.parse(JSON.stringify(this._cards));
+    newCard.user_details.already_watched = !newCard.user_details.already_watched;
+    this._changeData(newCard);
   }
 
   _renderPopup() {
