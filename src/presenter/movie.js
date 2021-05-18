@@ -31,14 +31,14 @@ export default class Movie {
   }
 
 
-  init(cards) {
-    this._cards = cards;
+  init(card) {
+    this._cards = card;
 
     const prevCardComponent = this._cardComponent;
     const prevCardPopupComponent = this._cardPopupComponent;
 
-    this._cardComponent = new CardView(cards);
-    this._cardPopupComponent = new CardPopupView(cards);
+    this._cardComponent = new CardView(card);
+    this._cardPopupComponent = new CardPopupView(card);
 
     this._cardComponent.setClickHandler(this._handleCardClick);
     this._cardComponent.setWatchListClickHandler(this._handleWatchListClick);

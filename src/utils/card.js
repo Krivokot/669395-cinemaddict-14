@@ -27,7 +27,7 @@ export const sortCardUp = (cardA, cardB) => {
   return dayjs(cardA.film_info.release.date).diff(dayjs(cardB.film_info.release.date));
 };
 
-export const sortRating = (cards) => {
+export const sortRating = (card) => {
   const sortCardsByRating = (a,b) => {
     if (a.film_info.total_rating > b.film_info.total_rating) {
       return 1;
@@ -37,5 +37,5 @@ export const sortRating = (cards) => {
     }
     return 0;
   };
-  cards.sort(sortCardsByRating);
+  card.sort(sortCardsByRating);
 };
