@@ -50,7 +50,6 @@ export default class MovieList {
     this._cards = updateItem(this._cards, updatedCard);
     this._sourcedCardList = updateItem(this._sourcedCardList, updatedCard);
     this._cardPresenter[updatedCard.id].init(updatedCard);
-    console.log(this._cards, updatedCard);
   }
 
   _handleModeChange() {
@@ -66,7 +65,7 @@ export default class MovieList {
       case SortType.DATE_UP:
         this._cards.sort(sortCardUp);
         break;
-        case SortType.RATING:
+      case SortType.RATING:
         this._cards.sort(sortRating(this._cards));
         break;
       default:
