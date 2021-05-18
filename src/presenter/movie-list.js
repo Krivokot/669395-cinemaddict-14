@@ -6,7 +6,7 @@ import { render, remove } from '../utils/render.js';
 import CardContainerView from '../view/card-container.js';
 import CardPresenter from './movie.js';
 import { updateItem } from '../utils/common.js';
-import {sortCardUp} from '../utils/card.js';
+import {sortCardUp, sortRating} from '../utils/card.js';
 import {SortType} from '../const.js';
 
 const CARDS_COUNT_PER_STEP = 5;
@@ -25,6 +25,7 @@ export default class MovieList {
     this._renderedCardCount = CARDS_COUNT_PER_STEP;
     this._cardPresenter = {};
 
+    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
   }
 
@@ -40,27 +41,33 @@ export default class MovieList {
 
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleCardChange = this._handleCardChange.bind(this);
-    this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
 
     this._renderMovieList(this._cards);
   }
 
   _handleCardChange(updatedCard) {
+
     this._cards = updateItem(this._cards, updatedCard);
     this._sourcedCardList = updateItem(this._sourcedCardList, updatedCard);
     this._cardPresenter[updatedCard.id].init(updatedCard);
+    console.log(this._cards, updatedCard);
   }
 
   _handleModeChange() {
     Object
       .values(this._cardPresenter)
       .forEach((presenter) => presenter.resetView());
+
   }
 
   _sortCards(sortType) {
+
     switch (sortType) {
       case SortType.DATE_UP:
         this._cards.sort(sortCardUp);
+        break;
+        case SortType.RATING:
+        this._cards.sort(sortRating(this._cards));
         break;
       default:
         this._cards = this._sourcedCardList.slice();
@@ -137,6 +144,7 @@ export default class MovieList {
     if (this._cards.length > CARDS_COUNT_PER_STEP) {
       this._renderShowMoreButton();
     }
+
   }
 
   _renderMovieList() {

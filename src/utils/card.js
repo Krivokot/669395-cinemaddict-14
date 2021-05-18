@@ -17,21 +17,24 @@ const getWeightForNullDate = (dateA, dateB) => {
 };
 
 export const sortCardUp = (cardA, cardB) => {
-  const weight = getWeightForNullDate(cardA.dueDate, cardB.dueDate);
+
+  const weight = getWeightForNullDate(cardA.film_info.release.date, cardB.film_info.release.date);
 
   if (weight !== null) {
     return weight;
   }
 
-  return dayjs(cardA.dueDate).diff(dayjs(cardB.dueDate));
+  return dayjs(cardA.film_info.release.date).diff(dayjs(cardB.film_info.release.date));
 };
 
-export const sortTaskDown = (cardA, cardB) => {
-  const weight = getWeightForNullDate(cardA.dueDate, cardB.dueDate);
-
-  if (weight !== null) {
-    return weight;
-  }
-
-  return dayjs(cardB.dueDate).diff(dayjs(cardA.dueDate));
+export const sortRating = (cards) => {
+  cards.sort(function (a, b) {
+    if (a.film_info.total_rating > b.film_info.total_rating) {
+      return 1;
+    }
+    if (a.film_info.total_rating < b.film_info.total_rating) {
+      return -1;
+    }
+    return 0;
+  });
 };
