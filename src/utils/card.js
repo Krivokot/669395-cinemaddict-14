@@ -28,7 +28,7 @@ export const sortCardUp = (cardA, cardB) => {
 };
 
 export const sortRating = (cards) => {
-  cards.sort(function (a, b) {
+  const sortCardsByRating = (a,b) => {
     if (a.film_info.total_rating > b.film_info.total_rating) {
       return 1;
     }
@@ -36,5 +36,6 @@ export const sortRating = (cards) => {
       return -1;
     }
     return 0;
-  });
+  };
+  cards.sort(sortCardsByRating);
 };
