@@ -36,7 +36,9 @@ export default class MovieList {
     this._renderSort();
 
     render(this._main, this._cardListComponent);
-    const filmsContainerElement = this._cardListComponent.getElement().querySelector('.films-list');
+    const filmsContainerElement = this._cardListComponent.getElement()
+      .querySelector('.films-list');
+
     render(filmsContainerElement, this._cardContainerComponent);
 
     this._handleModeChange = this._handleModeChange.bind(this);
@@ -129,7 +131,9 @@ export default class MovieList {
   }
 
   _renderShowMoreButton() {
-    const filmsContainerElement = this._cardListComponent.getElement().querySelector('.films-list');
+    const filmsContainerElement = this._cardListComponent.getElement()
+      .querySelector('.films-list');
+
     render(filmsContainerElement, this._showMoreButtonComponent);
 
     this._showMoreButtonComponent.setClickHandler(() => {

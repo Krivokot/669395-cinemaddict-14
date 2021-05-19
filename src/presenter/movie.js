@@ -1,5 +1,6 @@
 import CardView from '../view/card.js';
-import CardPopupView from '../view/card-popup';
+import CardPopupView from '../view/card-popup.js';
+import commentView from '../view/comments.js';
 import { isEscEvent } from '../utils/common.js';
 import { render, remove } from '../utils/render.js';
 
@@ -33,6 +34,8 @@ export default class Movie {
 
   init(card) {
     this._cards = card;
+
+    console.log(this._cards);
 
     const prevCardComponent = this._cardComponent;
     const prevCardPopupComponent = this._cardPopupComponent;
@@ -76,10 +79,14 @@ export default class Movie {
     this._cardPopupComponent.setFavoritesClickHandler(this._handleFavoritesClick);
 
     this._renderPopup();
+    this._renderComments();
   }
 
   _handleWatchListClick() {
-    this._cardComponent.getElement().querySelector('.film-card__controls-item--add-to-watchlist').classList.toggle('film-card__controls-item--active');
+    this._cardComponent.getElement()
+      .querySelector('.film-card__controls-item--add-to-watchlist')
+      .classList
+      .toggle('film-card__controls-item--active');
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
     newCard.user_details.watchlist = !newCard.user_details.watchlist;
@@ -88,7 +95,10 @@ export default class Movie {
   }
 
   _handleFavoritesClick() {
-    this._cardComponent.getElement().querySelector('.film-card__controls-item--favorite').classList.toggle('film-card__controls-item--active');
+    this._cardComponent.getElement()
+      .querySelector('.film-card__controls-item--favorite')
+      .classList
+      .toggle('film-card__controls-item--active');
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
     newCard.user_details.favorite = !newCard.user_details.favorite;
@@ -96,7 +106,11 @@ export default class Movie {
   }
 
   _handleHistoryClick() {
-    this._cardComponent.getElement().querySelector('.film-card__controls-item--mark-as-watched').classList.toggle('film-card__controls-item--active');
+    this._cardComponent.getElement()
+      .querySelector('.film-card__controls-item--mark-as-watched')
+      .classList
+      .toggle('film-card__controls-item--active');
+
     const newCard = JSON.parse(JSON.stringify(this._cards));
     newCard.user_details.already_watched = !newCard.user_details.already_watched;
     this._changeData(newCard);
@@ -106,6 +120,15 @@ export default class Movie {
     render(this._mainPageContainer, this._cardPopupComponent);
     bodyElement.classList.add('hide-overflow');
     this._mode = Mode.EDITING;
+  }
+
+  _renderComments() {
+    const newCommentsArray = this._cards.comments;
+    const commentContainerElement = this._cardPopupComponent.getElement()
+      .querySelector('.film-details__comments-list');
+    newCommentsArray
+      .slice(0, newCommentsArray.length)
+      .forEach((commentElement) => render(commentContainerElement, new commentView(commentElement)));
   }
 
   _closePopup() {

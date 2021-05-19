@@ -1,5 +1,7 @@
-const createCommentTemplate = (card) => {
-  const { comments: {emotion, comment, date, author} } = card;
+import AbstractView from './abstract.js';
+
+const createCommentTemplate = (commentList) => {
+  const { emotion, comment, date, author } = commentList;
   return `
   <li class="film-details__comment">
   <span class="film-details__comment-emoji">
@@ -16,4 +18,14 @@ const createCommentTemplate = (card) => {
 </li>`;
 };
 
-export {createCommentTemplate};
+export default class Comment extends AbstractView {
+  constructor(comment) {
+    super();
+    this._comment = comment;
+
+  }
+
+  getTemplate() {
+    return createCommentTemplate(this._comment);
+  }
+}

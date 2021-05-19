@@ -7,6 +7,7 @@ import { render } from './utils/render.js';
 const CARDS_COUNT = 25;
 
 const cards = new Array(CARDS_COUNT).fill().map(generateCard);
+console.log(cards);
 
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');

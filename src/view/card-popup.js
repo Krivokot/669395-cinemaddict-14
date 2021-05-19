@@ -1,8 +1,8 @@
 import AbstractView from './abstract.js';
 
 const createFilmInfoPopupTemplate = (card) => {
-  const { film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} }, user_details: {watchlist, already_watched, favorite} } = card;
-
+  const {comments, film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} }, user_details: {watchlist, already_watched, favorite} } = card;
+  const commentsArray = comments.length;
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
     <div class="film-details__top-container">
@@ -82,7 +82,7 @@ const createFilmInfoPopupTemplate = (card) => {
 
     <div class="film-details__bottom-container">
       <section class="film-details__comments-wrap">
-        <h3 class="film-details__comments-title">Comments <span class="film-details__comments-count">4</span></h3>
+        <h3 class="film-details__comments-title">Comment${commentsArray === 1 ? '' : 's'} <span class="film-details__comments-count">${commentsArray}</span></h3>
 
         <ul class="film-details__comments-list">
 
