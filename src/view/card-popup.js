@@ -1,7 +1,7 @@
 import AbstractView from './abstract.js';
 
 const createFilmInfoPopupTemplate = (card) => {
-  const { film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} } } = card;
+  const { film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, release: {date} }, user_details: {watchlist, already_watched, favorite} } = card;
 
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -69,13 +69,13 @@ const createFilmInfoPopupTemplate = (card) => {
       </div>
 
       <section class="film-details__controls">
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watchlist" name="watchlist">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${watchlist ? 'checked' : ''} id="watchlist" name="watchlist">
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${already_watched ? 'checked' : ''} id="watched" name="watched">
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" id="favorite" name="favorite">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${favorite ? 'checked' : ''} id="favorite" name="favorite">
         <label for="favorite" class="film-details__control-label film-details__control-label--favorite">Add to favorites</label>
       </section>
     </div>
@@ -127,10 +127,54 @@ export default class CardPopup extends AbstractView {
   constructor(card) {
     super();
     this._card = card;
+    this._btnCloseClickHandler = this._btnCloseClickHandler.bind(this);
+    this._watchListClickHandler = this._watchListClickHandler.bind(this);
+    this._historyClickHandler = this._historyClickHandler.bind(this);
+    this._favoritesClickHandler = this._favoritesClickHandler.bind(this);
   }
 
   getTemplate() {
     return createFilmInfoPopupTemplate(this._card);
+  }
+
+  _btnCloseClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.clickCloseButton();
+  }
+
+  _watchListClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.watchListClick();
+  }
+
+  _historyClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.historyClick();
+  }
+
+  _favoritesClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoritesClick();
+  }
+
+  setButtonCloseClickHandler(callback) {
+    this._callback.clickCloseButton = callback;
+    this.getElement().querySelector('.film-details__close-btn').addEventListener('click', this._btnCloseClickHandler);
+  }
+
+  setWatchListClickHandler(callback) {
+    this._callback.watchListClick = callback;
+    this.getElement().querySelector('.film-details__control-label--watchlist').addEventListener('click', this._watchListClickHandler);
+  }
+
+  setHistoryClickHandler(callback) {
+    this._callback.historyClick = callback;
+    this.getElement().querySelector('.film-details__control-label--watched').addEventListener('click', this._historyClickHandler);
+  }
+
+  setFavoritesClickHandler(callback) {
+    this._callback.favoritesClick = callback;
+    this.getElement().querySelector('.film-details__control-label--favorite').addEventListener('click', this._favoritesClickHandler);
   }
 }
 

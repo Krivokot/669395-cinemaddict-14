@@ -31,6 +31,11 @@ export const createElement = (template) => {
   return newElement.firstElementChild;
 };
 
-export const isEscEvent = (evt) => {
-  return evt.key === 'Escape' || evt.key === 'Esc';
+export const remove = (component) => {
+  if (!(component instanceof AbstractView)) {
+    throw new Error('Can remove only components');
+  }
+
+  component.getElement().remove();
+  component.removeElement();
 };
