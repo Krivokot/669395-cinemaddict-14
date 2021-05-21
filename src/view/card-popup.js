@@ -8,11 +8,12 @@ const createFilmInfoPopupTemplate = (card) => {
 
   const generateDate = () => {
     return dayjs(date)
-    .format('DD/MM/YYYY');
+      .format('DD/MM/YYYY');
   };
 
   const generateRuntime = () => {
-    return dayjs(runtime);
+
+    return dayjs.duration(runtime, 'minutes').format('H mm');
   };
 
   return `<section class="film-details">
@@ -59,7 +60,7 @@ const createFilmInfoPopupTemplate = (card) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${generateRuntime()}</td>
+              <td class="film-details__cell">${generateRuntime()}m</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
@@ -153,12 +154,14 @@ export default class CardPopup extends SmartView {
     this._addCommentKeydownHandler = this._addCommentKeydownHandler.bind(this);
   }
 
-  getTemplate() {
-    return createFilmInfoPopupTemplate(this._data);
+  reset(card) {
+    this.updateData(
+      CardPopup.parseCardToData(card),
+    );
   }
 
-  getCheckedEmoji() {
-    return `${this._emoji}.png`;
+  getTemplate() {
+    return createFilmInfoPopupTemplate(this._data);
   }
 
   getWrittenComment() {
@@ -169,14 +172,12 @@ export default class CardPopup extends SmartView {
     evt.preventDefault();
 
     this._emoji = evt.target.value;
-
     this.updateData(
       {
-      checkedEmoji: this._emoji,
+        checkedEmoji: this._emoji,
       // writtenComment: this.getElement().querySelector('.film-details__comment-input').value,
-        },
-      );
-        console.log(this._data);
+      },
+    );
   }
 
   _addCommentKeydownHandler(evt) {
@@ -206,6 +207,16 @@ export default class CardPopup extends SmartView {
     this.setHistoryClickHandler(this._callback.historyClick);
     this.setFavoritesClickHandler(this._callback.favoritesClick);
     this.setAddCommentKeydownHandler(this._callback.addComment);
+  }
+
+  static parseCardToData(card) {
+    return Object.assign(
+      {},
+      card,
+      {
+        checkedEmoji: false,
+      },
+    );
   }
 
   _btnCloseClickHandler(evt) {

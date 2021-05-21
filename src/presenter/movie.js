@@ -130,7 +130,7 @@ export default class Movie {
     newCommentsArray
       .slice(0, newCommentsArray.length)
       .forEach((commentElement) => render(commentContainerElement, new CommentView(commentElement)));
-      this._cardPopupComponent.setEmojiChangeHandler();
+    this._cardPopupComponent.setEmojiChangeHandler();
   }
 
   _closePopup() {
@@ -138,6 +138,7 @@ export default class Movie {
     bodyElement.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
     this._mode = Mode.DEFAULT;
+    this._cardPopupComponent.reset(this._cards);
   }
 
   _handleCloseButtonClick() {

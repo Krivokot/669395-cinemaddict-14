@@ -1,7 +1,14 @@
 import AbstractView from './abstract.js';
+import dayjs from 'dayjs';
 
 const createCommentTemplate = (commentList) => {
   const { emotion, comment, date, author } = commentList;
+
+  const generateDate = () => {
+    return dayjs(date)
+      .format('DD/MM/YYYY HH:mm');
+  };
+
   return `
   <li class="film-details__comment">
   <span class="film-details__comment-emoji">
@@ -11,7 +18,7 @@ const createCommentTemplate = (commentList) => {
     <p class="film-details__comment-text">${comment}</p>
     <p class="film-details__comment-info">
       <span class="film-details__comment-author">${author}</span>
-      <span class="film-details__comment-day">${date}</span>
+      <span class="film-details__comment-day">${generateDate()}</span>
       <button class="film-details__comment-delete">Delete</button>
     </p>
   </div>

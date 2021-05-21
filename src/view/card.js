@@ -1,16 +1,30 @@
 import AbstractView from './abstract.js';
+import dayjs from 'dayjs';
 
 const createFilmCardTemplate = (card) => {
-  const {comments, film_info: {title, poster, description, total_rating}, user_details: {watchlist, already_watched, favorite} } = card;
+  const {comments, film_info: {title, poster, description, total_rating, runtime, release: {date}}, user_details: {watchlist, already_watched, favorite} } = card;
   const commentsArray = comments.length;
+
+  const generateDate = () => {
+    return dayjs(date)
+      .format('YYYY');
+  };
+
+  const generateRuntime = () => {
+    const duration = require('dayjs/plugin/duration');
+    dayjs.extend(duration);
+
+    return dayjs.duration(runtime, 'minutes').format('H mm');
+  };
+
 
   return `
           <article class="film-card">
           <h3 class="film-card__title">${title}</h3>
           <p class="film-card__rating">${total_rating}</p>
           <p class="film-card__info">
-            <span class="film-card__year">1929</span>
-            <span class="film-card__duration">1h 55m</span>
+            <span class="film-card__year">${generateDate()}</span>
+            <span class="film-card__duration">${generateRuntime()}m</span>
             <span class="film-card__genre">Musical</span>
           </p>
           <img src="${poster}" alt="" class="film-card__poster">
