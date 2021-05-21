@@ -3,6 +3,7 @@ import CardPopupView from '../view/card-popup.js';
 import CommentView from '../view/comments.js';
 import { isEscEvent } from '../utils/common.js';
 import { render, remove } from '../utils/render.js';
+import {UserAction, UpdateType} from '../const.js';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -89,7 +90,10 @@ export default class Movie {
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
     newCard.user_details.watchlist = !newCard.user_details.watchlist;
-    this._changeData(newCard);
+    this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      newCard);
 
   }
 
@@ -101,7 +105,11 @@ export default class Movie {
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
     newCard.user_details.favorite = !newCard.user_details.favorite;
-    this._changeData(newCard);
+    this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      newCard,
+      );
   }
 
   _handleHistoryClick() {
@@ -112,7 +120,11 @@ export default class Movie {
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
     newCard.user_details.already_watched = !newCard.user_details.already_watched;
-    this._changeData(newCard);
+    this._changeData(
+      UserAction.UPDATE_CARD,
+      UpdateType.MINOR,
+      newCard,
+      );
   }
 
   _renderPopup() {
