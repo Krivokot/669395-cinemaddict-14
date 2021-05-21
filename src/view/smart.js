@@ -7,7 +7,7 @@ export default class Smart extends AbstractView {
     this._data = {};
   }
 
-  updateState(update, stateUpdating) {
+  updateData(update, justDataUpdating) {
     if (!update) {
       return;
     }
@@ -18,7 +18,7 @@ export default class Smart extends AbstractView {
       update,
     );
 
-    if (stateUpdating) {
+    if (justDataUpdating) {
       return;
     }
 
@@ -27,7 +27,6 @@ export default class Smart extends AbstractView {
 
   updateElement() {
     const prevElement = this.getElement();
-
     const parent = prevElement.parentElement;
     this.removeElement();
 
@@ -36,14 +35,10 @@ export default class Smart extends AbstractView {
     parent.replaceChild(newElement, prevElement);
 
     this.restoreHandlers();
-    this.restoreAdditionalViewParts();
   }
 
   restoreHandlers() {
     throw new Error('Abstract method not implemented: resetHandlers');
   }
 
-  restoreAdditionalViewParts() {
-    throw new Error('Abstract method not implemented: additionalViewParts');
-  }
 }

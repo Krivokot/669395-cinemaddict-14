@@ -1,6 +1,6 @@
 import CardView from '../view/card.js';
 import CardPopupView from '../view/card-popup.js';
-import commentView from '../view/comments.js';
+import CommentView from '../view/comments.js';
 import { isEscEvent } from '../utils/common.js';
 import { render, remove } from '../utils/render.js';
 
@@ -29,13 +29,12 @@ export default class Movie {
     this._handleCloseButtonClick = this._handleCloseButtonClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
+
   }
 
 
   init(card) {
     this._cards = card;
-
-    console.log(this._cards);
 
     const prevCardComponent = this._cardComponent;
     const prevCardPopupComponent = this._cardPopupComponent;
@@ -120,6 +119,8 @@ export default class Movie {
     render(this._mainPageContainer, this._cardPopupComponent);
     bodyElement.classList.add('hide-overflow');
     this._mode = Mode.EDITING;
+
+
   }
 
   _renderComments() {
@@ -128,7 +129,8 @@ export default class Movie {
       .querySelector('.film-details__comments-list');
     newCommentsArray
       .slice(0, newCommentsArray.length)
-      .forEach((commentElement) => render(commentContainerElement, new commentView(commentElement)));
+      .forEach((commentElement) => render(commentContainerElement, new CommentView(commentElement)));
+      this._cardPopupComponent.setEmojiChangeHandler();
   }
 
   _closePopup() {

@@ -85,6 +85,12 @@ const generateDate = (year, yearPlus, format) => {
     .format(format);
 };
 
+const generateRuntime = () => {
+  const duration = require('dayjs/plugin/duration')
+  dayjs.extend(duration)
+  return dayjs.duration(77, "minutes");
+};
+
 const generateRandomText = () => {
   const randomLength = getRandomInt(descriptions.length);
 
@@ -127,7 +133,7 @@ export const generateCard = () => {
         date: generateDate(1920, 40, 'D MMMM YYYY'),
         release_country: 'some',
       },
-      runtime: 'some',
+      runtime: generateRuntime(),
       genre: [
         'some',
       ],
