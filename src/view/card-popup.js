@@ -152,6 +152,7 @@ export default class CardPopup extends SmartView {
     this._favoritesClickHandler = this._favoritesClickHandler.bind(this);
     this._emojiChangeHandler = this._emojiChangeHandler.bind(this);
     this._addCommentKeydownHandler = this._addCommentKeydownHandler.bind(this);
+
   }
 
   reset(card) {

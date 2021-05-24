@@ -1,5 +1,7 @@
 import AbstractView from './abstract.js';
 import dayjs from 'dayjs';
+import CardPopupView from './card-popup.js'
+import CardPopup from './card-popup.js';
 
 const createCommentTemplate = (commentList) => {
   const { emotion, comment, date, author } = commentList;

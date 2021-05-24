@@ -2,18 +2,20 @@ import ShowMoreButtonView from '../view/show-button.js';
 import CardListView from '../view/card-list.js';
 import EmptyListView from '../view/no-card-list.js';
 import SortMenuView from '../view/sort.js';
-import { render, remove } from '../utils/render.js';
+import { render, remove, RenderPosition } from '../utils/render.js';
 import CardContainerView from '../view/card-container.js';
 import CardPresenter from './movie.js';
 import {sortCardUp, sortRating} from '../utils/card.js';
 import {SortType, UpdateType, UserAction} from '../const.js';
+import {filter} from '../utils/filters.js';
 
 const CARD_COUNT_PER_STEP = 5;
 
 export default class MovieList {
-  constructor(main, cardsModel) {
+  constructor(main, cardsModel, filterModel) {
     this._main = main;
     this._cardsModel = cardsModel;
+    this._filterModel = filterModel;
 
     this._currentSortType = SortType.DEFAULT;
 
@@ -29,13 +31,14 @@ export default class MovieList {
     this._handleSortTypeChange = this._handleSortTypeChange.bind(this);
     this._handleViewAction = this._handleViewAction.bind(this);
     this._handleModelEvent = this._handleModelEvent.bind(this);
+    this._handleModeChange = this._handleModeChange.bind(this);
+    this._handleCardChange = this._handleCardChange.bind(this);
 
     this._cardsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
   }
 
   init() {
-
-    this._renderSort();
 
     render(this._main, this._cardListComponent);
     const filmsContainerElement = this._cardListComponent.getElement()
@@ -43,23 +46,23 @@ export default class MovieList {
 
     render(filmsContainerElement, this._cardContainerComponent);
 
-    this._handleModeChange = this._handleModeChange.bind(this);
-    this._handleCardChange = this._handleCardChange.bind(this);
-
-    this._renderMovieList(this._cards);
+    this._renderMovieList();
 
   }
 
   _getCards() {
+    const filterType = this._filterModel.getFilter();
+    const cards = this._cardsModel.getCards();
+    const filtredCards = filter[filterType](cards);
+
     switch (this._currentSortType) {
       case SortType.DATE_UP:
-        return this._cardsModel.getCards().slice().sort(sortCardUp);
+        return filtredCards.sort(sortCardUp);
       case SortType.RATING:
-        return this._cardsModel.getCards().slice().sort(sortRating(this._cardsModel.getCards()));
-      break;
-
+        return filtredCards.sort(sortRating);
     }
-    return this._cardsModel.getCards();
+    return filtredCards;
+    
   }
 
   _handleCardChange(updatedCard) {
@@ -76,13 +79,19 @@ export default class MovieList {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_CARD:
-        this._cardsModel.updatedCard(updateType, update);
+        this._cardsModel.updateCard(updateType, update);
         break;
       case UserAction.ADD_CARD:
         this._cardsModel.addCard(updateType, update);
         break;
       case UserAction.DELETE_CARD:
         this._cardsModel.deleteCard(updateType, update);
+        break;
+        case UserAction.ADD_COMMENT:
+        this._cardsModel.addComment(updateType, update);
+        break;
+      case UserAction.DELETE_COMMENT:
+        this._cardsModel.deleteComment(updateType, update);
         break;
     }
   }
@@ -117,10 +126,9 @@ export default class MovieList {
     if (this._sortComponent !== null) {
       this._sortComponent = null;
     }
-
+    
     this._sortComponent = new SortMenuView(this._currentSortType);
-
-    render(this._main, this._sortComponent);
+    render(this._cardListComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
   }
 
@@ -140,7 +148,7 @@ export default class MovieList {
       .forEach((presenter) => presenter.destroy());
     this._cardPresenter = {};
 
-    // remove(this._sortComponent);
+    remove(this._sortComponent);
     remove(this._noCardsComponent);
     remove(this._showMoreButtonComponent);
 
@@ -194,18 +202,6 @@ export default class MovieList {
 
   }
 
-  _renderCardList() {
-    const cardCount = this._getCards().length;
-    const cards = this._getCards().slice(0, Math.min(cardCount, CARD_COUNT_PER_STEP));
-
-    this._renderCards(cards);
-
-    if (cardCount > CARD_COUNT_PER_STEP) {
-      this._renderShowMoreButton();
-    }
-
-  }
-
   _renderMovieList() {
     const cards = this._getCards();
     const cardCount = cards.length;
@@ -213,11 +209,13 @@ export default class MovieList {
       this._renderNoCards();
       return;
     }
-
+    this._renderSort();
     this._renderCards(cards.slice(0, Math.min(cardCount, this._renderedCardCount)));
 
     if (cardCount > this._renderedCardCount) {
       this._renderShowMoreButton();
     }
+
+    
   }
 }

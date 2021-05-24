@@ -30,7 +30,6 @@ export default class Movie {
     this._handleCloseButtonClick = this._handleCloseButtonClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
-
   }
 
 

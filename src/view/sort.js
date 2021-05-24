@@ -12,7 +12,6 @@ const createSortTemplate = (currentSortType) => {
 
 export default class SortMenu extends AbstractView {
   constructor(currentSortType) {
-    console.log(currentSortType);
     super();
     this._currentSortType = currentSortType;
     this._sortTypeChangeHandler = this._sortTypeChangeHandler.bind(this);
