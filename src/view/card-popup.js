@@ -103,7 +103,7 @@ const createFilmInfoPopupTemplate = (card) => {
 
         <div class="film-details__new-comment">
           <div class="film-details__add-emoji-label">
-          ${checkedEmoji ? `<img src="images/emoji/${checkedEmoji}.png" width="55" height="55" alt="emoji-${checkedEmoji}">` : ''}
+            <img src="" class="film-details__new-comment-emoji" width="55" height="55"/>
           </div>
 
           <label class="film-details__comment-label">
@@ -172,13 +172,14 @@ export default class CardPopup extends SmartView {
   _emojiChangeHandler(evt) {
     evt.preventDefault();
 
-    this._emoji = evt.target.value;
-    this.updateData(
-      {
-        checkedEmoji: this._emoji,
-      // writtenComment: this.getElement().querySelector('.film-details__comment-input').value,
-      },
-    );
+    const emojiSource = `images/emoji/${evt.target.value}.png`
+    this.getElement().querySelector('.film-details__new-comment-emoji').src = emojiSource;
+    // this.updateData(
+    //   {
+    //     checkedEmoji: this._emoji,
+    //   // writtenComment: this.getElement().querySelector('.film-details__comment-input').value,
+    //   },
+    // );
   }
 
   _addCommentKeydownHandler(evt) {

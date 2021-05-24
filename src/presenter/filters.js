@@ -1,5 +1,5 @@
 import FilterView from '../view/menu.js';
- import {render, RenderPosition, remove} from '../utils/render.js';
+ import {render, RenderPosition, remove, replace} from '../utils/render.js';
  import {filter} from '../utils/filters.js';
  import {FilterType, UpdateType} from '../const.js';
 
@@ -23,16 +23,17 @@ import FilterView from '../view/menu.js';
      const prevFilterComponent = this._filterComponent;
 
      this._filterComponent = new FilterView(filters, this._filterModel.getFilter());
-     console.log(this._filterComponent);
-     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
 
+     this._filterComponent.setFilterTypeChangeHandler(this._handleFilterTypeChange);
      if (prevFilterComponent === null) {
-       render(this._filterContainer, this._filterComponent, RenderPosition.BEFOREEND);
+       render(this._filterContainer, this._filterComponent, RenderPosition.AFTERBEGIN);
        return;
      }
 
      replace(this._filterComponent, prevFilterComponent);
      remove(prevFilterComponent);
+
+
    }
 
    _handleModelEvent() {
@@ -53,17 +54,17 @@ import FilterView from '../view/menu.js';
      return [
        {
          type: FilterType.ALL,
-         name: 'All',
+         name: 'All movies',
          count: filter[FilterType.ALL](cards).length,
        },
        {
          type: FilterType.WATCH_LIST,
-         name: 'watchlist',
+         name: 'Watchlist',
          count: filter[FilterType.WATCH_LIST](cards).length,
        },
        {
          type: FilterType.HISTORY,
-         name: 'history',
+         name: 'History',
          count: filter[FilterType.HISTORY](cards).length,
        },
        {

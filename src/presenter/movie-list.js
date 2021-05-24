@@ -61,8 +61,11 @@ export default class MovieList {
       case SortType.RATING:
         return filtredCards.sort(sortRating);
     }
+
     return filtredCards;
-    
+
+
+
   }
 
   _handleCardChange(updatedCard) {
@@ -126,7 +129,7 @@ export default class MovieList {
     if (this._sortComponent !== null) {
       this._sortComponent = null;
     }
-    
+
     this._sortComponent = new SortMenuView(this._currentSortType);
     render(this._cardListComponent, this._sortComponent, RenderPosition.AFTERBEGIN);
     this._sortComponent.setSortTypeChangeHandler(this._handleSortTypeChange);
@@ -216,6 +219,6 @@ export default class MovieList {
       this._renderShowMoreButton();
     }
 
-    
+
   }
 }

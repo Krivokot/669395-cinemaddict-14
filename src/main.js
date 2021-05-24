@@ -10,17 +10,11 @@ import FilterPresenter from './presenter/filters.js';
 const CARDS_COUNT = 25;
 
 const cards = new Array(CARDS_COUNT).fill().map(generateCard);
-const filters = [
-  {
-    type: 'all',
-    name: 'ALL',
-    count: 0,
-  },
-];
 
 const cardsModel = new CardsModel();
-const filterModel = new FilterModel();
 cardsModel.setCards(cards);
+const filterModel = new FilterModel();
+
 
 const mainPageElement = document.querySelector('.main');
 const mainHeaderElement = document.querySelector('.header');
@@ -34,8 +28,9 @@ if (cards.length === 1) {
 
 
 render (mainHeaderElement, new UserGradeView().getElement());
-render (mainPageElement, new SiteMenuView(filters, 'all').getElement());
+// render (mainPageElement, new SiteMenuView(filters, 'all').getElement());
 
 const filmListPresenter = new MovieListPresenter(mainPageElement, cardsModel, filterModel);
 filmListPresenter.init();
 const filterPresenter = new FilterPresenter(mainPageElement, filterModel, cardsModel);
+filterPresenter.init();
