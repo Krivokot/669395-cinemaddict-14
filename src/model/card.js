@@ -6,8 +6,10 @@ export default class Cards extends Observer {
     this._cards = [];
   }
 
-  setCards(cards) {
+  setCards(updateType ,cards) {
     this._cards = cards.slice();
+
+    this._notify(updateType);
   }
 
   getCards() {
@@ -76,5 +78,32 @@ export default class Cards extends Observer {
     ];
 
     this._notify(updateType);
+  }
+
+  static adaptToClient(card) {
+    const adaptedCard = Object.assign(
+      {},
+      card,
+      {
+        card
+      },
+    );
+
+
+    return adaptedCard;
+  }
+
+  static adaptToServer(card) {
+    const adaptedCard = Object.assign(
+      {},
+      card,
+      {
+        card
+      },
+    );
+
+
+
+    return adaptedCard;
   }
 }

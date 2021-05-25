@@ -8,16 +8,19 @@ import CardPresenter from './movie.js';
 import {sortCardUp, sortRating} from '../utils/card.js';
 import {SortType, UpdateType, UserAction} from '../const.js';
 import {filter} from '../utils/filters.js';
+import LoadingView from '../view/loading.js';
 
 const CARD_COUNT_PER_STEP = 5;
 
 export default class MovieList {
-  constructor(main, cardsModel, filterModel) {
+  constructor(main, cardsModel, filterModel, api) {
     this._main = main;
     this._cardsModel = cardsModel;
     this._filterModel = filterModel;
 
     this._currentSortType = SortType.DEFAULT;
+    this._isLoading = true;
+    this._api = api;
 
     this._sortComponent = null;
     this._loadMoreButtonComponent = null;
@@ -25,6 +28,7 @@ export default class MovieList {
     this._cardListComponent = new CardListView();
     this._noCardsComponent = new EmptyListView();
     this._cardContainerComponent = new CardContainerView();
+    this._loadingComponent = new LoadingView();
     this._renderedCardCount = CARD_COUNT_PER_STEP;
     this._cardPresenter = {};
 
@@ -92,7 +96,9 @@ export default class MovieList {
   _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_CARD:
-        this._cardsModel.updateCard(updateType, update);
+        this._api.updateCard(update).then((response) => {
+          this._cardsModel.updateCard(updateType, response);
+        });
         break;
       case UserAction.ADD_CARD:
         this._cardsModel.addCard(updateType, update);
@@ -120,6 +126,11 @@ export default class MovieList {
           break;
         case UpdateType.MAJOR:
           this._clearCardList({resetRenderedCardCount: true, resetSortType: true});
+          this._renderMovieList();
+          break;
+        case UpdateType.INIT:
+          this._isLoading = false;
+          remove(this._loadingComponent);
           this._renderMovieList();
           break;
       }
@@ -180,6 +191,10 @@ export default class MovieList {
     cards.forEach((card) => this._renderCard(card));
   }
 
+  _renderLoading() {
+    render(this._cardListComponent, this._loadingComponent, RenderPosition.AFTERBEGIN);
+  }
+
   _renderNoCards() {
     render(this._main, this._noCardsComponent.getElement());
   }
@@ -216,6 +231,10 @@ export default class MovieList {
   }
 
   _renderMovieList() {
+    if (this._isLoading) {
+      this._renderLoading();
+      return;
+    }
     const cards = this._getCards();
     const cardCount = cards.length;
     if (cardCount === 0) {

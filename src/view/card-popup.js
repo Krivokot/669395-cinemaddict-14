@@ -3,17 +3,17 @@ import {Emoji} from '../const';
 import dayjs from 'dayjs';
 
 const createFilmInfoPopupTemplate = (card) => {
-  const {writtenComment, checkedEmoji, comments, film_info: {title, poster, description, age_rating, alternative_title, total_rating, director, runtime, release: {date} }, user_details: {watchlist, already_watched, favorite} } = card;
+  const {writtenComment, checkedEmoji, comments, film_info: {title, poster, description, age_rating, alternative_title, writers, actors, total_rating, director, runtime, release: {date, release_country} }, user_details: {watchlist, already_watched, favorite} } = card;
   const commentsArray = comments.length;
 
   const generateDate = () => {
     return dayjs(date)
-      .format('DD/MM/YYYY');
+      .format('DD MMM YYYY');
   };
 
   const generateRuntime = () => {
 
-    return dayjs.duration(runtime, 'minutes').format('H mm');
+    return dayjs.duration(runtime, 'minutes').format('H [h] mm [m]');
   };
 
   return `<section class="film-details">
@@ -48,11 +48,11 @@ const createFilmInfoPopupTemplate = (card) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Writers</td>
-              <td class="film-details__cell">Anne Wigton, Heinz Herald, Richard Weil</td>
+              <td class="film-details__cell">${writers}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Actors</td>
-              <td class="film-details__cell">Erich von Stroheim, Mary Beth Hughes, Dan Duryea</td>
+              <td class="film-details__cell">${actors}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Release Date</td>
@@ -60,11 +60,11 @@ const createFilmInfoPopupTemplate = (card) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Runtime</td>
-              <td class="film-details__cell">${generateRuntime()}m</td>
+              <td class="film-details__cell">${generateRuntime()}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">USA</td>
+              <td class="film-details__cell">${release_country}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Genres</td>
