@@ -21,6 +21,8 @@
     "node": "10"
   },
   "dependencies": {
-    "dayjs": "^1.10.4"
+    "chart.js": "2.9.4",
+    "chartjs-plugin-datalabels": "1.0.0",
+    "dayjs": "1.10.4"
   }
 }

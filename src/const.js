@@ -31,3 +31,16 @@ export const FilterType = {
   HISTORY: 'history',
   FAVORITES: 'favorites',
 };
+
+export const MenuItem = {
+  STATS: 'stats',
+  FILTERS: 'filters',
+};
+
+export const DatePeriod = {
+  ALL_TIME: 'all-time',
+  TODAY: 'day',
+  WEEK: 'week',
+  MONTH: 'month',
+  YEAR: 'year',
+};

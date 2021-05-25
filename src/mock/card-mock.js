@@ -129,7 +129,10 @@ export const generateCard = () => {
       },
       runtime: getRandomInt(320),
       genre: [
-        'some',
+        'scared',
+        'action',
+        'drama',
+        'comedy',
       ],
       description: generateRandomText(),
     },

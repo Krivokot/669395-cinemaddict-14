@@ -1,10 +1,10 @@
 import AbstractView from './abstract.js';
+import {MenuItem} from '../const.js';
 
 const createFilterItemTemplate = (filter, currentFilterType) => {
   const {type, name, count} = filter;
-
   return `
-      <a href="#${type}" value="${type}" data-filter="${type}" class="main-navigation__item ${type === currentFilterType ? 'main-navigation__item--active' : ''}">${name === 'All movies' ? 'All movies':`${name} <span class="main-navigation__item-count">${count}</span></a>`}
+      <a href="#${type}" data-filter="${type}" data-menu="${MenuItem.FILTERS}" class="main-navigation__item ${type === currentFilterType ? 'main-navigation__item--active' : ''}">${name === 'All movies' ? 'All movies':`${name} <span class="main-navigation__item-count">${count}</span></a>`}
     `;
 };
 
@@ -17,7 +17,7 @@ export const createFilterTemplate = (filterItems, currentFilterType) => {
     <div class="main-navigation__items">
     ${filterItemsTemplate}
     </div>
-    <a href="#stats" class="main-navigation__additional">Stats</a>
+    <a href="#stats" data-menu="${MenuItem.STATS}" class="main-navigation__additional">Stats</a>
     </nav>`;
 };
 
@@ -28,6 +28,7 @@ export default class SiteMenu extends AbstractView {
     this._currentFilter = currentFilterType;
 
     this._filterTypeChangeHandler = this._filterTypeChangeHandler.bind(this);
+    this._statsClickHandlder = this._statsClickHandlder.bind(this);
   }
 
   getTemplate() {
@@ -37,10 +38,22 @@ export default class SiteMenu extends AbstractView {
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     this._callback.filterTypeChange(evt.target.dataset.filter);
+    this._callback.menuItemTypeChange(evt.target.dataset.menu)
   }
 
-  setFilterTypeChangeHandler(callback) {
+  setFilterTypeChangeHandler(callback, secondcallback) {
     this._callback.filterTypeChange = callback;
+    this._callback.menuItemTypeChange = secondcallback;
     this.getElement().querySelectorAll('.main-navigation__item').forEach((item) => item.addEventListener('click', this._filterTypeChangeHandler));
+  }
+
+  _statsClickHandlder(evt) {
+    evt.preventDefault();
+    this._callback.statsClickHandler(evt.target.dataset.menu);
+  }
+
+  setStatsClickHandler(callback) {
+    this._callback.statsClickHandler = callback;
+    this.getElement().querySelector('.main-navigation__additional').addEventListener('click', this._statsClickHandlder);
   }
 }

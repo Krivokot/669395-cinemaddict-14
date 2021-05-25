@@ -34,8 +34,7 @@ export default class MovieList {
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleCardChange = this._handleCardChange.bind(this);
 
-    this._cardsModel.addObserver(this._handleModelEvent);
-    this._filterModel.addObserver(this._handleModelEvent);
+
   }
 
   init() {
@@ -46,8 +45,21 @@ export default class MovieList {
 
     render(filmsContainerElement, this._cardContainerComponent);
 
+    this._cardsModel.addObserver(this._handleModelEvent);
+    this._filterModel.addObserver(this._handleModelEvent);
+
     this._renderMovieList();
 
+  }
+
+  destroy() {
+    this._clearCardList({resetRenderedCardCount: true, resetSortType: true});
+
+    remove(this._cardListComponent);
+    remove(this._cardContainerComponent);
+
+    this._cardsModel.removeObserver(this._handleModelEvent);
+    this._filterModel.removeObserver(this._handleModelEvent);
   }
 
   _getCards() {
@@ -63,8 +75,6 @@ export default class MovieList {
     }
 
     return filtredCards;
-
-
 
   }
 
