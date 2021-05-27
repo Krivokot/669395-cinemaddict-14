@@ -1,6 +1,4 @@
 import MovieListPresenter from './presenter/movie-list.js';
-import UserGradeView from './view/user-grade.js';
-import { render } from './utils/render.js';
 import CardsModel from './model/card.js';
 import FilterModel from './model/filters.js';
 import CommentsModel from './model/comments.js';
@@ -24,13 +22,14 @@ const filterModel = new FilterModel();
 const commentsModel = new CommentsModel();
 
 const statisticsPresenter = new StatisticPresenter(mainPageElement, cardsModel);
-const filmListPresenter = new MovieListPresenter(mainPageElement, cardsModel, commentsModel, filterModel, api);
+const filmListPresenter = new MovieListPresenter(mainPageElement, cardsModel, commentsModel, filterModel, api, mainHeaderElement);
 const filterPresenter = new FilterPresenter(mainPageElement, filterModel, cardsModel);
-render (mainHeaderElement, new UserGradeView().getElement());
+
 
 const footerStatisticElement = document.querySelector('.footer__statistics');
 
 export const handleStatsClick = (menuItem) => {
+  console.log(menuItem);
   switch (menuItem) {
     case MenuItem.FILTERS:
       statisticsPresenter.destroy();
@@ -38,6 +37,7 @@ export const handleStatsClick = (menuItem) => {
       filmListPresenter.init();
       break;
     case MenuItem.STATS:
+      statisticsPresenter.destroy();
       filmListPresenter.destroy();
       statisticsPresenter.init();
       break;

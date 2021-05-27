@@ -30,3 +30,7 @@ export const sortCardUp = (cardA, cardB) => {
   export const sortRating = (filmA, filmB) => {
     return filmB.film_info.total_rating - filmA.film_info.total_rating;
   };
+
+  export const getWatchedFilms = (films) => {
+    return films.filter((film) => film.user_details.already_watched).length;
+  };

@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import {DatePeriod} from '../const.js';
 
 export const getWatchedFilmByRange = (cards, period) => {
-
   const watchedFilm = cards.filter((card) => card.user_details.already_watched);
   if (period === DatePeriod.ALL_TIME) {
     return watchedFilm;

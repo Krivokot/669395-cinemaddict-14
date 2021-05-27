@@ -9,12 +9,14 @@ import {sortCardUp, sortRating} from '../utils/card.js';
 import {SortType, UpdateType, UserAction} from '../const.js';
 import {filter} from '../utils/filters.js';
 import LoadingView from '../view/loading.js';
+import UserGradeView from '../view/user-grade.js';
 
 const CARD_COUNT_PER_STEP = 5;
 
 export default class MovieList {
-  constructor(main, cardsModel, commentsModel, filterModel, api) {
+  constructor(main, cardsModel, commentsModel, filterModel, api, header) {
     this._main = main;
+    this._header = header;
     this._cardsModel = cardsModel;
     this._commentsModel = commentsModel;
     this._filterModel = filterModel;
@@ -26,6 +28,7 @@ export default class MovieList {
 
     this._sortComponent = null;
     this._loadMoreButtonComponent = null;
+    this._gradeComponent = null;
 
     this._cardListComponent = new CardListView();
     this._noCardsComponent = new EmptyListView();
@@ -106,12 +109,17 @@ export default class MovieList {
       case UserAction.DELETE_CARD:
         this._cardsModel.deleteCard(updateType, update);
         break;
-        case UserAction.ADD_COMMENT:
-        this._cardsModel.addComment(updateType, update);
-        break;
-      case UserAction.DELETE_COMMENT:
-        this._cardsModel.deleteComment(updateType, update);
-        break;
+        case UserAction.DELETE_COMMENT:
+          this._api.deleteComment(update).then(() => {
+            this._cardsModel.deleteComment(updateType, update);
+          });
+          break;
+      //   case UserAction.ADD_COMMENT:
+      //   this._cardsModel.addComment(updateType, update);
+      //   break;
+      // case UserAction.DELETE_COMMENT:
+      //   this._cardsModel.deleteComment(updateType, update);
+      //   break;
     }
   }
 
@@ -235,6 +243,15 @@ export default class MovieList {
       return;
     }
     const cards = this._getCards();
+    if (this._gradeComponent) {
+      remove(this._gradeComponent);
+      this._gradeComponent = null;
+    }
+
+    this._gradeComponent = new UserGradeView(cards);
+      render(this._header, this._gradeComponent)
+
+
     const cardCount = cards.length;
     if (cardCount === 0) {
       this._renderNoCards();

@@ -13,8 +13,8 @@ export default class Statistic {
     this._handleStatisticFilterChange = this._handleStatisticFilterChange.bind(this);
   }
 
-  init() {
-    this._statisticComponent = new StatisticView(this._getStatData(DatePeriod.ALL_TIME));
+  init(data = this._getStatData(DatePeriod.ALL_TIME)) {
+    this._statisticComponent = new StatisticView(data);
 
     this._statisticComponent.setFilterStatisticChangeHandler(this._handleStatisticFilterChange);
 
@@ -44,7 +44,8 @@ export default class Statistic {
 
 
   _handleStatisticFilterChange(period) {
+    this.destroy();
+    this.init(this._getStatData(period));
     this._statisticComponent.updateData(this._getStatData(period));
-    console.log(period);
   }
 }

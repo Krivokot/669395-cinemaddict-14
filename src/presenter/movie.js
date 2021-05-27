@@ -154,7 +154,7 @@ export default class Movie {
     newCommentsArray
       .slice(0, newCommentsArray.length)
       .forEach((commentElement) => {
-        const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel);
+        const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel, this._changeData);
         commentsPresenter.init();
       });
     this._cardPopupComponent.setEmojiChangeHandler();

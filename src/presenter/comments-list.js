@@ -4,10 +4,11 @@ import {UserAction, UpdateType} from '../const.js';
 
 
 export default class Comments {
-  constructor(container, comment, commentsModel) {
+  constructor(container, comment, commentsModel, changeData) {
     this._container = container;
     this._comment = comment
     this._commentsModel = commentsModel;
+    this._changeData = changeData;
 
     this._commentComponent = new CommentView(this._comment);
 
@@ -36,6 +37,7 @@ export default class Comments {
         break;
       case UserAction.DELETE_COMMENT:
         this._commentsModel.deleteComment(updateType, update);
+        this._changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, update);
         break;
     }
 

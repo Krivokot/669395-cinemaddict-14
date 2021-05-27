@@ -4,6 +4,7 @@ import CommentsModel from './model/comments.js';
 const Method = {
   GET: 'GET',
   PUT: 'PUT',
+  DELETE: 'DELETE',
 };
 
 const SuccessHTTPStatusRange = {
@@ -38,6 +39,13 @@ export default class Api {
     })
       .then(Api.toJSON)
       .then(CardsModel.adaptToClient);
+  }
+
+  deleteComment(comment) {
+    return this._load({
+      url: `comments/${comment.id}`,
+      method: Method.DELETE,
+    });
   }
 
   _load({
