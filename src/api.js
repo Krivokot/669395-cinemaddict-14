@@ -1,4 +1,5 @@
 import CardsModel from './model/card.js';
+import CommentsModel from './model/comments.js';
 
 const Method = {
   GET: 'GET',
@@ -24,7 +25,8 @@ export default class Api {
 
   getComments(id) {
     return this._load({url: 'comments/' + id})
-      .then(Api.toJSON);
+      .then(Api.toJSON)
+      .then((comments) => comments.map(CommentsModel.adaptToClient));
   }
 
   updateCard(card) {

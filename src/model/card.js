@@ -56,30 +56,6 @@ export default class Cards extends Observer {
     this._notify(updateType);
   }
 
-  addComment(updateType, update) {
-    this._cards.comments = [
-      update,
-      ...this._cards.comments,
-    ];
-
-    this._notify(updateType, update);
-  }
-
-  deleteComment(updateType, update) {
-    const index = this._cards.comments.findIndex((comment) => comment.id === update.id);
-
-    if (index === -1) {
-      throw new Error('Can\'t delete unexisting card');
-    }
-
-    this._cards.comments = [
-      ...this._cards.comments.slice(0, index),
-      ...this._cards.comments.slice(index + 1),
-    ];
-
-    this._notify(updateType);
-  }
-
   static adaptToClient(card) {
     const adaptedCard = Object.assign(
       {},

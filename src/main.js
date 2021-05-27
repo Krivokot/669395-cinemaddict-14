@@ -3,6 +3,7 @@ import UserGradeView from './view/user-grade.js';
 import { render } from './utils/render.js';
 import CardsModel from './model/card.js';
 import FilterModel from './model/filters.js';
+import CommentsModel from './model/comments.js';
 import FilterPresenter from './presenter/filters.js';
 import {MenuItem} from './const.js';
 import StatisticPresenter from './presenter/statistics.js';
@@ -20,19 +21,14 @@ const api = new Api(END_POINT, AUTHORIZATION);
 
 const cardsModel = new CardsModel();
 const filterModel = new FilterModel();
+const commentsModel = new CommentsModel();
 
 const statisticsPresenter = new StatisticPresenter(mainPageElement, cardsModel);
-const filmListPresenter = new MovieListPresenter(mainPageElement, cardsModel, filterModel, api);
+const filmListPresenter = new MovieListPresenter(mainPageElement, cardsModel, commentsModel, filterModel, api);
 const filterPresenter = new FilterPresenter(mainPageElement, filterModel, cardsModel);
 render (mainHeaderElement, new UserGradeView().getElement());
 
-// const footerStatisticElement = document.querySelector('.footer__statistics');
-
-// if (api.getCards().length === 1) {
-//   footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movie inside</p>`);
-// } else {
-//   footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movies inside</p>`);
-// }
+const footerStatisticElement = document.querySelector('.footer__statistics');
 
 export const handleStatsClick = (menuItem) => {
   switch (menuItem) {
@@ -55,10 +51,16 @@ filterPresenter.init();
 api.getCards()
   .then((cards) => {
     cardsModel.setCards(UpdateType.INIT, cards);
+    if (cards.length === 1) {
+      footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movie inside</p>`);
+    } else {
+      footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movies inside</p>`);
+    }
   })
   .catch(() => {
     cardsModel.setCards(UpdateType.INIT, []);
   });
+
 
 
 

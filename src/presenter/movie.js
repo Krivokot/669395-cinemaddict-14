@@ -1,6 +1,6 @@
 import CardView from '../view/card.js';
 import CardPopupView from '../view/card-popup.js';
-import CommentView from '../view/comments.js';
+import CommentsPresenter from './comments-list.js';
 import { isEscEvent } from '../utils/common.js';
 import { render, remove } from '../utils/render.js';
 import {UserAction, UpdateType} from '../const.js';
@@ -13,11 +13,15 @@ const Mode = {
 const bodyElement = document.querySelector('body');
 
 export default class Movie {
-  constructor(cardListContainer, mainPageContainer, changeData, changeMode) {
+  constructor(cardListContainer, mainPageContainer, changeData, changeMode, api, commentsModel, cards) {
     this._cardListContainer = cardListContainer;
     this._mainPageContainer = mainPageContainer;
     this._changeData = changeData;
     this._changeMode = changeMode;
+    this._api = api;
+    this._commentsModel = commentsModel;
+    this._cards = cards;
+
 
     this._cardComponent = null;
     this._cardPopupComponent = null;
@@ -30,17 +34,16 @@ export default class Movie {
     this._handleCloseButtonClick = this._handleCloseButtonClick.bind(this);
     this._escKeyDownHandler = this._escKeyDownHandler.bind(this);
 
+
   }
 
 
-  init(card) {
-    this._cards = card;
+  init() {
 
     const prevCardComponent = this._cardComponent;
     const prevCardPopupComponent = this._cardPopupComponent;
-
-    this._cardComponent = new CardView(card);
-    this._cardPopupComponent = new CardPopupView(card);
+    this._cardComponent = new CardView(this._cards);
+    this._cardPopupComponent = new CardPopupView(this._cards);
 
     this._cardComponent.setClickHandler(this._handleCardClick);
     this._cardComponent.setWatchListClickHandler(this._handleWatchListClick);
@@ -50,7 +53,9 @@ export default class Movie {
     if (prevCardComponent === null || prevCardPopupComponent === null) {
       render(this._cardListContainer, this._cardComponent);
       return;
+
     }
+
 
     remove(prevCardComponent);
     remove(prevCardPopupComponent);
@@ -69,7 +74,6 @@ export default class Movie {
   }
 
   _handleCardClick() {
-
     document.addEventListener('keydown', this._escKeyDownHandler);
 
     this._cardPopupComponent.setButtonCloseClickHandler(this._handleCloseButtonClick);
@@ -77,8 +81,18 @@ export default class Movie {
     this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
     this._cardPopupComponent.setFavoritesClickHandler(this._handleFavoritesClick);
 
+    this._api.getComments(this._cards.id)
+    .then((comments) => {
+      this._commentsModel.setComments(UpdateType.INIT, comments);
+      this._renderComments();
+    })
+    .catch(() => {
+      this._commentsModel.setComments(UpdateType.INIT, []);
+    });
+
     this._renderPopup();
-    this._renderComments();
+
+
   }
 
   _handleWatchListClick() {
@@ -131,16 +145,18 @@ export default class Movie {
     bodyElement.classList.add('hide-overflow');
     this._mode = Mode.EDITING;
 
-
   }
 
   _renderComments() {
-    const newCommentsArray = this._cards.comments;
+    const newCommentsArray = this._commentsModel.getComments();
     const commentContainerElement = this._cardPopupComponent.getElement()
       .querySelector('.film-details__comments-list');
     newCommentsArray
       .slice(0, newCommentsArray.length)
-      .forEach((commentElement) => render(commentContainerElement, new CommentView(commentElement)));
+      .forEach((commentElement) => {
+        const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel);
+        commentsPresenter.init();
+      });
     this._cardPopupComponent.setEmojiChangeHandler();
   }
 

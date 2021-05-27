@@ -13,14 +13,16 @@ import LoadingView from '../view/loading.js';
 const CARD_COUNT_PER_STEP = 5;
 
 export default class MovieList {
-  constructor(main, cardsModel, filterModel, api) {
+  constructor(main, cardsModel, commentsModel, filterModel, api) {
     this._main = main;
     this._cardsModel = cardsModel;
+    this._commentsModel = commentsModel;
     this._filterModel = filterModel;
 
     this._currentSortType = SortType.DEFAULT;
     this._isLoading = true;
     this._api = api;
+
 
     this._sortComponent = null;
     this._loadMoreButtonComponent = null;
@@ -37,7 +39,6 @@ export default class MovieList {
     this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
     this._handleCardChange = this._handleCardChange.bind(this);
-
 
   }
 
@@ -79,7 +80,6 @@ export default class MovieList {
     }
 
     return filtredCards;
-
   }
 
   _handleCardChange(updatedCard) {
@@ -157,9 +157,8 @@ export default class MovieList {
   }
 
   _renderCard(cards) {
-
-    const cardPresenter = new CardPresenter(this._cardContainerComponent, this._main, this._handleViewAction, this._handleModeChange);
-    cardPresenter.init(cards);
+    const cardPresenter = new CardPresenter(this._cardContainerComponent, this._main, this._handleViewAction, this._handleModeChange, this._api, this._commentsModel, cards);
+    cardPresenter.init();
     this._cardPresenter[cards.id] = cardPresenter;
 
   }
