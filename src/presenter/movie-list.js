@@ -85,6 +85,21 @@ export default class MovieList {
     return filtredCards;
   }
 
+  _getAlreadyWatched() {
+    const filterType = 'history';
+    const cards = this._cardsModel.getCards();
+    const filtredCards = filter[filterType](cards);
+
+    switch (this._currentSortType) {
+      case SortType.DATE_UP:
+        return filtredCards.sort(sortCardUp);
+      case SortType.RATING:
+        return filtredCards.sort(sortRating);
+    }
+
+    return filtredCards;
+  }
+
   _handleCardChange(updatedCard) {
 
     this._cardPresenter[updatedCard.id].init(updatedCard);
@@ -109,40 +124,36 @@ export default class MovieList {
       case UserAction.DELETE_CARD:
         this._cardsModel.deleteCard(updateType, update);
         break;
-        case UserAction.DELETE_COMMENT:
-          this._api.deleteComment(update).then(() => {
-            this._cardsModel.deleteComment(updateType, update);
-          });
-          break;
-      //   case UserAction.ADD_COMMENT:
-      //   this._cardsModel.addComment(updateType, update);
-      //   break;
       // case UserAction.DELETE_COMMENT:
-      //   this._cardsModel.deleteComment(updateType, update);
+      //   this._api.deleteComment(update).then(() => {
+      //     this._cardsModel.deleteComment(updateType, update);
+      //   });
       //   break;
+        case UserAction.ADD_COMMENT:
+          this._api.addComment(update).then(() => {
+            this._cardsModel.addComment(updateType, update);
+          });
+        break;
     }
   }
 
-    _handleModelEvent(updateType, data) {
-      switch (updateType) {
-        case UpdateType.PATCH:
-          this._cardPresenter[data.id].init(data);
-          break;
-        case UpdateType.MINOR:
-          this._clearCardList();
-          this._renderMovieList();
-          break;
-        case UpdateType.MAJOR:
-          this._clearCardList({resetRenderedCardCount: true, resetSortType: true});
-          this._renderMovieList();
-          break;
-        case UpdateType.INIT:
-          this._isLoading = false;
-          remove(this._loadingComponent);
-          this._renderMovieList();
-          break;
-      }
+  _handleModelEvent(updateType, data) {
+    switch (updateType) {
+      case UpdateType.MINOR:
+        this._clearCardList();
+        this._renderMovieList();
+        break;
+      case UpdateType.MAJOR:
+        this._clearCardList({resetRenderedCardCount: true, resetSortType: true});
+        this._renderMovieList();
+        break;
+      case UpdateType.INIT:
+        this._isLoading = false;
+        remove(this._loadingComponent);
+        this._renderMovieList();
+        break;
     }
+  }
 
   _handleSortTypeChange(sortType) {
     if (this._currentSortType === sortType) {
@@ -165,7 +176,7 @@ export default class MovieList {
   }
 
   _renderCard(cards) {
-    const cardPresenter = new CardPresenter(this._cardContainerComponent, this._main, this._handleViewAction, this._handleModeChange, this._api, this._commentsModel, cards);
+    const cardPresenter = new CardPresenter(this._cardContainerComponent, this._main, this._handleViewAction, this._handleModeChange, this._api, this._commentsModel, cards, this._cardsModel);
     cardPresenter.init();
     this._cardPresenter[cards.id] = cardPresenter;
 
@@ -243,13 +254,14 @@ export default class MovieList {
       return;
     }
     const cards = this._getCards();
+    const watched = this._getAlreadyWatched();
     if (this._gradeComponent) {
       remove(this._gradeComponent);
       this._gradeComponent = null;
     }
 
-    this._gradeComponent = new UserGradeView(cards);
-      render(this._header, this._gradeComponent)
+    this._gradeComponent = new UserGradeView(watched);
+    render(this._header, this._gradeComponent);
 
 
     const cardCount = cards.length;

@@ -56,10 +56,18 @@ export default class Cards extends Observer {
     this._notify(updateType);
   }
 
+  addComment(updateType, update) {
+    this._cards = [
+      ...this._cards.comments,
+      update.id,
+    ];
+
+    this._notify(updateType, update);
+  }
+
   deleteComment(updateType, update) {
-    console.log(this._cards);
     const index = this._cards.findIndex((card) => {
-      return card.id
+      return card.id;
     });
 
     if (index === -1) {
@@ -69,7 +77,9 @@ export default class Cards extends Observer {
     let cardComments = card.comments;
     cardComments = cardComments.filter((comment) => comment.id !== update.id);
     card.comments = cardComments;
+
     this._notify(updateType, card);
+
   }
 
 
@@ -78,7 +88,7 @@ export default class Cards extends Observer {
       {},
       card,
       {
-        card
+        card,
       },
     );
 
@@ -91,11 +101,9 @@ export default class Cards extends Observer {
       {},
       card,
       {
-        card
+        card,
       },
     );
-
-
 
     return adaptedCard;
   }

@@ -1,6 +1,8 @@
 import AbstractView from './abstract.js';
 import dayjs from 'dayjs';
 
+const DESCRIPTION_LENGTH = 139;
+
 const createFilmCardTemplate = (card) => {
   const {comments, film_info: {title, poster, description, total_rating, runtime, genre, release: {date}}, user_details: {watchlist, already_watched, favorite} } = card;
   const commentsArray = comments.length;
@@ -17,6 +19,14 @@ const createFilmCardTemplate = (card) => {
     return dayjs.duration(runtime, 'minutes').format('H [h] mm [m]');
   };
 
+  const getDescriptionCut = (description) => {
+
+    if (description.length >= DESCRIPTION_LENGTH) {
+      return description.slice(0, DESCRIPTION_LENGTH);
+    }
+
+    return description;
+  };
 
   return `
           <article class="film-card">
@@ -25,10 +35,10 @@ const createFilmCardTemplate = (card) => {
           <p class="film-card__info">
             <span class="film-card__year">${generateDate()}</span>
             <span class="film-card__duration">${generateRuntime()}</span>
-            <span class="film-card__genre">Musical</span>
+            <span class="film-card__genre">${genre[0]}</span>
           </p>
           <img src="${poster}" alt="" class="film-card__poster">
-          <p class="film-card__description">${description}</p>
+          <p class="film-card__description">${description.length > DESCRIPTION_LENGTH ? getDescriptionCut(description) : description} ${description.length > DESCRIPTION_LENGTH ? '...' : ' '}</p>
           <a class="film-card__comments">${commentsArray} comment${commentsArray === 1 ? '' : 's'}</a>
           <div class="film-card__controls">
             <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>

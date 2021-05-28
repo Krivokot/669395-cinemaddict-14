@@ -27,10 +27,10 @@ export const sortCardUp = (cardA, cardB) => {
   return dayjs(cardB.film_info.release.date).diff(dayjs(cardA.film_info.release.date));
 };
 
-  export const sortRating = (filmA, filmB) => {
-    return filmB.film_info.total_rating - filmA.film_info.total_rating;
-  };
+export const sortRating = (filmA, filmB) => {
+  return filmB.film_info.total_rating - filmA.film_info.total_rating;
+};
 
-  export const getWatchedFilms = (films) => {
-    return films.filter((film) => film.user_details.already_watched).length;
-  };
+export const getWatchedFilms = (films) => {
+  return films.filter((film) => film.user_details.already_watched).length;
+};

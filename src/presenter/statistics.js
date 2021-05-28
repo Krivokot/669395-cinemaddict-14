@@ -1,6 +1,6 @@
 import StatisticView from '../view/statistics.js';
 import {render, remove} from '../utils/render.js';
-import {getFilmGenresStat, getWatchedFilmByRange} from '../utils/statistic.js';
+import {getFilmGenresStat, getWatchedFilmByRange, getWatchedFilmByRank} from '../utils/statistic.js';
 import {DatePeriod} from '../const.js';
 
 
@@ -29,6 +29,7 @@ export default class Statistic {
   _getStatData(period) {
     const cards = this._cardsModel.getCards();
     const watchedFilms = getWatchedFilmByRange(cards, period);
+    const watchedFilmsRank = getWatchedFilmByRank(cards);
     const genresCount = getFilmGenresStat(watchedFilms);
     const genres = genresCount.map((genre) => genre[0]);
     const count = genresCount.map((genre) => genre[1]);
@@ -36,6 +37,7 @@ export default class Statistic {
     return {
       period,
       watchedFilms,
+      watchedFilmsRank,
       genresCount,
       genres,
       count,

@@ -2,8 +2,12 @@ import SmartView from './smart.js';
 import {Emoji} from '../const';
 import dayjs from 'dayjs';
 
+const createGenresTemplate = (genres) => {
+  return genres.map((genre) => `<span class="film-details__genre">${genre}</span>`).join('');
+};
+
 const createFilmInfoPopupTemplate = (card) => {
-  const {writtenComment, checkedEmoji, comments, film_info: {title, poster, description, age_rating, alternative_title, writers, actors, total_rating, director, runtime, release: {date, release_country} }, user_details: {watchlist, already_watched, favorite} } = card;
+  const {writtenComment, checkedEmoji, comments, film_info: {title, poster, description, age_rating, genre, alternative_title, writers, actors, total_rating, director, runtime, release: {date, release_country} }, user_details: {watchlist, already_watched, favorite} } = card;
   const commentsArray = comments.length;
 
   const generateDate = () => {
@@ -12,9 +16,10 @@ const createFilmInfoPopupTemplate = (card) => {
   };
 
   const generateRuntime = () => {
-
     return dayjs.duration(runtime, 'minutes').format('H [h] mm [m]');
   };
+
+  const genresTemplate = createGenresTemplate(genre);
 
   return `<section class="film-details">
   <form class="film-details__inner" action="" method="get">
@@ -67,11 +72,9 @@ const createFilmInfoPopupTemplate = (card) => {
               <td class="film-details__cell">${release_country}</td>
             </tr>
             <tr class="film-details__row">
-              <td class="film-details__term">Genres</td>
+              <td class="film-details__term">Genre${genre.length === 1 ? ' ' : 's'}</td>
               <td class="film-details__cell">
-                <span class="film-details__genre">Drama</span>
-                <span class="film-details__genre">Film-Noir</span>
-                <span class="film-details__genre">Mystery</span></td>
+              ${genresTemplate}</td>
             </tr>
           </table>
 
@@ -172,7 +175,7 @@ export default class CardPopup extends SmartView {
   _emojiChangeHandler(evt) {
     evt.preventDefault();
 
-    const emojiSource = `images/emoji/${evt.target.value}.png`
+    const emojiSource = `images/emoji/${evt.target.value}.png`;
     this.getElement().querySelector('.film-details__new-comment-emoji').src = emojiSource;
     // this.updateData(
     //   {

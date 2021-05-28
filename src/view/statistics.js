@@ -66,7 +66,7 @@ const renderChart = (statisticCtx, {genres, count}) => {
       },
     },
   });
-}
+};
 
 const getHumanizedDurationStats = (totalTime) => {
   const hours = Math.floor(totalTime / 60);
@@ -77,10 +77,10 @@ const getHumanizedDurationStats = (totalTime) => {
 };
 
 const getTopGenre = (genres) => genres.length === 0 ? '' : genres[0];
-const userGrade = getRank();
 
-const createStatisticsTemplate = ({period, watchedFilms,  genres}) => {
+const createStatisticsTemplate = ({period, watchedFilms, watchedFilmsRank,  genres}) => {
 
+  const userGrade = getRank(watchedFilmsRank.length);
 
   const watchedFilmsTimeInMinutesCount = watchedFilms.reduce((accumulator, film) => {
     return accumulator + film.film_info.runtime;

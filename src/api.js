@@ -41,6 +41,13 @@ export default class Api {
       .then(CardsModel.adaptToClient);
   }
 
+  addComment(comment) {
+    return this._load({
+      url: `comments/${comment.id}`,
+      method: Method.PUT,
+    });
+  }
+
   deleteComment(comment) {
     return this._load({
       url: `comments/${comment.id}`,

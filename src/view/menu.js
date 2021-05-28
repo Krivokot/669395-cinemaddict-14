@@ -38,7 +38,9 @@ export default class SiteMenu extends AbstractView {
   _filterTypeChangeHandler(evt) {
     evt.preventDefault();
     this._callback.filterTypeChange(evt.target.dataset.filter);
-    this._callback.menuItemTypeChange(evt.target.dataset.menu)
+    this._callback.menuItemTypeChange(evt.target.dataset.menu);
+    this.getElement().querySelector('.main-navigation__additional').classList.remove('main-navigation__additional--active')
+
   }
 
   setFilterTypeChangeHandler(callback, secondcallback) {
@@ -50,6 +52,8 @@ export default class SiteMenu extends AbstractView {
   _statsClickHandlder(evt) {
     evt.preventDefault();
     this._callback.statsClickHandler(evt.target.dataset.menu);
+    this.getElement().querySelector('.main-navigation__additional').classList.add('main-navigation__additional--active')
+    this.getElement().querySelectorAll('.main-navigation__item').forEach((item) => item.classList.remove('main-navigation__item--active'));
   }
 
   setStatsClickHandler(callback) {

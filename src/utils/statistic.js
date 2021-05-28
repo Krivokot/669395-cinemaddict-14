@@ -10,6 +10,11 @@ export const getWatchedFilmByRange = (cards, period) => {
   return cards.filter((card) => card.user_details.already_watched && dayjs().diff(dayjs(card.user_details.watching_date), period) === 0);
 };
 
+export const getWatchedFilmByRank = (cards) => {
+  const watchedFilm = cards.filter((card) => card.user_details.already_watched);
+  return watchedFilm;
+};
+
 export const getFilmGenresStat = (cards) => {
   const results = {};
 

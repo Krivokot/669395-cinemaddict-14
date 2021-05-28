@@ -29,7 +29,6 @@ const filterPresenter = new FilterPresenter(mainPageElement, filterModel, cardsM
 const footerStatisticElement = document.querySelector('.footer__statistics');
 
 export const handleStatsClick = (menuItem) => {
-  console.log(menuItem);
   switch (menuItem) {
     case MenuItem.FILTERS:
       statisticsPresenter.destroy();
@@ -42,8 +41,7 @@ export const handleStatsClick = (menuItem) => {
       statisticsPresenter.init();
       break;
   }
-
-}
+};
 
 filmListPresenter.init();
 filterPresenter.init();
@@ -60,8 +58,3 @@ api.getCards()
   .catch(() => {
     cardsModel.setCards(UpdateType.INIT, []);
   });
-
-
-
-
-
