@@ -129,10 +129,12 @@ export default class MovieList {
           this._cardsModel.deleteComment(updateType, update);
         });
         break;
+
       case UserAction.ADD_COMMENT:
         this._api.addComment(update).then(() => {
           this._cardsModel.addComment(updateType, update);
         });
+
         break;
     }
   }

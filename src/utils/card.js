@@ -33,4 +33,5 @@ export const sortRating = (filmA, filmB) => {
 
 export const getWatchedFilms = (films) => {
   return films.filter((film) => film.user_details.already_watched).length;
+
 };
