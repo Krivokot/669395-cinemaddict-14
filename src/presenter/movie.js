@@ -62,9 +62,8 @@ export default class Movie {
 
   }
 
-  destroy() {
+  update() {
     remove(this._cardComponent);
-    remove(this._cardPopupComponent);
   }
 
 
@@ -180,11 +179,23 @@ export default class Movie {
     }
   }
 
+  _getCommentData() {
+    const emoji = this._cardPopupComponent.getEmoji();
+    const text = this._cardPopupComponent.getWrittenComment();
+    return {
+      author: 'Ilya',
+      date: '10/10/10 20:20',
+      emotion: emoji,
+      id: 10,
+      text: text,
+    };
+  }
+
   _submitKeyDownHandler(evt) {
     if (evt.ctrlKey && evt.code === 'Enter') {
       evt.preventDefault();
-      this._commentsModel.addComment(UpdateType.PATCH, commentElement);
-      this._changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, commentElement);
+      this._commentsModel.addComment(UpdateType.PATCH, this._getCommentData());
+      this._changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, this._getCommentData());
     }
   }
 }

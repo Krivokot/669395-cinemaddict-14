@@ -6,7 +6,7 @@ import {UserAction, UpdateType} from '../const.js';
 export default class Comments {
   constructor(container, comment, commentsModel, changeData) {
     this._container = container;
-    this._comment = comment
+    this._comment = comment;
     this._commentsModel = commentsModel;
     this._changeData = changeData;
 
@@ -23,7 +23,6 @@ export default class Comments {
 
   }
 
-
   _handleDeleteClick() {
     this._handleViewAction(UserAction.DELETE_COMMENT, UpdateType.MINOR, this._comment);
 
@@ -32,8 +31,9 @@ export default class Comments {
   _handleViewAction(actionType, updateType, update) {
     this._commentsModel.addObserver(this._handleModelEvent);
     switch (actionType) {
-        case UserAction.ADD_COMMENT:
+      case UserAction.ADD_COMMENT:
         this._commentsModel.addComment(updateType, update);
+        this._changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, update);
         break;
       case UserAction.DELETE_COMMENT:
         this._commentsModel.deleteComment(updateType, update);
@@ -43,18 +43,8 @@ export default class Comments {
 
   }
 
-  _handleModelEvent(updateType) {
-    switch (updateType) {
-      case UpdateType.PATCH:
-      console.log('patch');
-      case UpdateType.MINOR:
-      console.log('minor');
-      this.destroy();
-        break;
-      case UpdateType.MAJOR:
-      console.log('major');
-        break;
-    }
+  _handleModelEvent() {
+    this.destroy();
   }
 
   destroy() {
@@ -65,7 +55,7 @@ export default class Comments {
   }
 
   _renderComments() {
-    render(this._container,  this._commentComponent)
+    render(this._container,  this._commentComponent);
   }
 
 

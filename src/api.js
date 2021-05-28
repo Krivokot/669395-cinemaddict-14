@@ -5,6 +5,7 @@ const Method = {
   GET: 'GET',
   PUT: 'PUT',
   DELETE: 'DELETE',
+  POST: 'POST',
 };
 
 const SuccessHTTPStatusRange = {
@@ -41,10 +42,12 @@ export default class Api {
       .then(CardsModel.adaptToClient);
   }
 
-  addComment(comment) {
+  addComment(card, comment) {
     return this._load({
-      url: `comments/${comment.id}`,
-      method: Method.PUT,
+      url: `movies/${card.id}`,
+      method: Method.POST,
+      body: JSON.stringify(comment),
+      headers: new Headers({'Content-Type': 'application/json'}),
     });
   }
 

@@ -124,20 +124,20 @@ export default class MovieList {
       case UserAction.DELETE_CARD:
         this._cardsModel.deleteCard(updateType, update);
         break;
-      // case UserAction.DELETE_COMMENT:
-      //   this._api.deleteComment(update).then(() => {
-      //     this._cardsModel.deleteComment(updateType, update);
-      //   });
-      //   break;
-        case UserAction.ADD_COMMENT:
-          this._api.addComment(update).then(() => {
-            this._cardsModel.addComment(updateType, update);
-          });
+      case UserAction.DELETE_COMMENT:
+        this._api.deleteComment(update).then(() => {
+          this._cardsModel.deleteComment(updateType, update);
+        });
+        break;
+      case UserAction.ADD_COMMENT:
+        this._api.addComment(update).then(() => {
+          this._cardsModel.addComment(updateType, update);
+        });
         break;
     }
   }
 
-  _handleModelEvent(updateType, data) {
+  _handleModelEvent(updateType) {
     switch (updateType) {
       case UpdateType.MINOR:
         this._clearCardList();
@@ -187,7 +187,7 @@ export default class MovieList {
 
     Object
       .values(this._cardPresenter)
-      .forEach((presenter) => presenter.destroy());
+      .forEach((presenter) => presenter.update());
     this._cardPresenter = {};
 
     remove(this._sortComponent);
