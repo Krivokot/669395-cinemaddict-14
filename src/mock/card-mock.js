@@ -109,7 +109,9 @@ const generateComment = () => {
 export const generateCard = () => {
   return {
     id: nanoid(),
+
     comments: new Array(getRandomInt(10)).fill().map(generateComment),
+
     film_info: {
       title: generateRandomValue(titles),
       alternative_title: generateRandomValue(titles),

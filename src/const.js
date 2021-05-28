@@ -4,6 +4,7 @@ export const SortType = {
   DATE_UP: 'date-up',
 };
 
+
 export const Emoji = {
   SMILE: 'smile',
   SLEEPING: 'sleeping',
@@ -45,3 +46,4 @@ export const DatePeriod = {
   MONTH: 'month',
   YEAR: 'year',
 };
+
