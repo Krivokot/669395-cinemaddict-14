@@ -1,4 +1,5 @@
 import dayjs from 'dayjs';
+import {nanoid} from 'nanoid';
 import {getRandomInt} from '../utils/common.js';
 
 const titles = [
@@ -34,8 +35,8 @@ const posters = [
 ];
 
 const booleans = [
-  'true',
-  'false',
+  true,
+  false,
 ];
 
 const descriptions = [
@@ -107,8 +108,8 @@ const generateComment = () => {
 
 export const generateCard = () => {
   return {
-    id: getRandomInt(1000),
-    comments: generateComment(),
+    id: nanoid(),
+    comments: new Array(getRandomInt(10)).fill().map(generateComment),
     film_info: {
       title: generateRandomValue(titles),
       alternative_title: generateRandomValue(titles),
@@ -126,9 +127,12 @@ export const generateCard = () => {
         date: generateDate(1920, 40, 'D MMMM YYYY'),
         release_country: 'some',
       },
-      runtime: 'some',
+      runtime: getRandomInt(320),
       genre: [
-        'some',
+        'scared',
+        'action',
+        'drama',
+        'comedy',
       ],
       description: generateRandomText(),
     },
