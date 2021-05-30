@@ -178,12 +178,6 @@ export default class CardPopup extends SmartView {
 
   _emojiChangeHandler(evt) {
     evt.preventDefault();
-    // this.updateData(
-    //   {
-    //     checkedEmoji: evt.target.value,
-    //   // writtenComment: this.getElement().querySelector('.film-details__comment-input').value,
-    //   },
-    // );
     const emojiSource = `images/emoji/${evt.target.value}.png`;
     this.getElement().querySelector('.film-details__new-comment-emoji').src = emojiSource;
     this.getElement().querySelector('.film-details__new-comment-emoji').value = evt.target.value;

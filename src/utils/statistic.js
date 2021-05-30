@@ -11,8 +11,8 @@ export const getWatchedFilmByRange = (cards, period) => {
 };
 
 export const getWatchedFilmByRank = (cards) => {
-  const watchedFilm = cards.filter((card) => card.user_details.already_watched);
-  return watchedFilm;
+  const watchedFilms = cards.filter((card) => card.user_details.already_watched);
+  return watchedFilms;
 };
 
 export const getFilmGenresStat = (cards) => {

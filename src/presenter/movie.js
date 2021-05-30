@@ -58,8 +58,6 @@ export default class Movie {
     remove(prevCardComponent);
     remove(prevCardPopupComponent);
 
-    this._commentsModel.addObserver(this._handleCommentModelEvent);
-
   }
 
   update() {
