@@ -88,7 +88,7 @@ export default class Cards extends Observer {
       {},
       {
         comments: card.comments,
-        film_info: {
+        filmInfo: {
           actors: card.film_info.actors,
           ageRating: card.film_info.age_rating,
           alternativeTitle: card.film_info.alternative_title,
@@ -106,7 +106,7 @@ export default class Cards extends Observer {
           writers: card.film_info.writers,
         },
         id: card.id,
-        user_details: {
+        userDetails: {
           alreadyWatched: card.user_details.already_watched,
           favorite: card.user_details.favorite,
           watchingDate: card.user_details.watching_date,
@@ -124,28 +124,28 @@ export default class Cards extends Observer {
       {
         comments: card.comments,
         'film_info': {
-          'actors': card.film_info.actors,
-          'age_rating': card.film_info.ageRating,
-          'alternative_title': card.film_info.alternativeTitle,
-          'description': card.film_info.description,
-          'director': card.film_info.director,
-          'genre': card.film_info.genre,
-          'poster': card.film_info.poster,
+          'actors': card.filmInfo.actors,
+          'age_rating': card.filmInfo.ageRating,
+          'alternative_title': card.filmInfo.alternativeTitle,
+          'description': card.filmInfo.description,
+          'director': card.filmInfo.director,
+          'genre': card.filmInfo.genre,
+          'poster': card.filmInfo.poster,
           'release': {
-            'date': card.film_info.release.date,
-            'release_country': card.film_info.release.releaseCountry,
+            'date': card.filmInfo.release.date,
+            'release_country': card.filmInfo.release.releaseCountry,
           },
-          'runtime': card.film_info.runtime,
-          'title': card.film_info.title,
-          'total_rating': card.film_info.totalRating,
-          'writers': card.film_info.writers,
+          'runtime': card.filmInfo.runtime,
+          'title': card.filmInfo.title,
+          'total_rating': card.filmInfo.totalRating,
+          'writers': card.filmInfo.writers,
         },
         'id': card.id,
         'user_details': {
-          'already_watched': card.user_details.alreadyWatched,
-          'favorite': card.user_details.favorite,
-          'watching_date': card.user_details.watchingDate,
-          'watchlist': card.user_details.watchlist,
+          'already_watched': card.userDetails.alreadyWatched,
+          'favorite': card.userDetails.favorite,
+          'watching_date': card.userDetails.watchingDate,
+          'watchlist': card.userDetails.watchlist,
         },
       },
 

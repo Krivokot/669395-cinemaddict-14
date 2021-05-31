@@ -3,14 +3,14 @@ import {DatePeriod} from '../const.js';
 
 export const getWatchedFilmByRange = (cards, period) => {
   if (period === DatePeriod.ALL_TIME) {
-    return cards.filter((card) => card.user_details.alreadyWatched);
+    return cards.filter((card) => card.userDetails.alreadyWatched);
   }
 
-  return cards.filter((card) => card.user_details.alreadyWatched && dayjs().diff(dayjs(card.user_details.watchingDate), period) === 0);
+  return cards.filter((card) => card.userDetails.alreadyWatched && dayjs().diff(dayjs(card.userDetails.watchingDate), period) === 0);
 };
 
 export const getWatchedFilmByRank = (cards) => {
-  const watchedFilms = cards.filter((card) => card.user_details.alreadyWatched);
+  const watchedFilms = cards.filter((card) => card.userDetails.alreadyWatched);
   return watchedFilms;
 };
 
@@ -22,7 +22,7 @@ const calculateGenres = (acc, genre) => {
 
 export const getFilmGenresStat = (cards) => {
   const genres = cards.reduce(
-    (acc, card) => card.film_info.genre.reduce(calculateGenres, acc),
+    (acc, card) => card.filmInfo.genre.reduce(calculateGenres, acc),
     {},
   );
 

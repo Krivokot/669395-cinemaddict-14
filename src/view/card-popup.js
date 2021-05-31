@@ -7,7 +7,7 @@ const createGenresTemplate = (genres) => {
 };
 
 const createFilmInfoPopupTemplate = (card) => {
-  const {writtenComment, checkedEmoji, comments, film_info: {title, poster, description, ageRating, genre, alternativeTitle, writers, actors, totalRating, director, runtime, release: {date, releaseCountry} }, user_details: {watchlist, alreadyWatched, favorite} } = card;
+  const {writtenComment, checkedEmoji, comments, filmInfo: {title, poster, description, ageRating, genre, alternativeTitle, writers, actors, totalRating, director, runtime, release: {date, releaseCountry} }, userDetails: {watchlist, alreadyWatched, favorite} } = card;
   const commentsArray = comments.length;
 
   const generateDate = () => {

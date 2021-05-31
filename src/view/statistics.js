@@ -83,7 +83,7 @@ const createStatisticsTemplate = ({period, watchedFilms, watchedFilmsRank,  genr
   const userGrade = getRank(watchedFilmsRank.length);
 
   const watchedFilmsTimeInMinutesCount = watchedFilms.reduce((accumulator, film) => {
-    return accumulator + film.film_info.runtime;
+    return accumulator + film.filmInfo.runtime;
   }, 0);
 
   return `<section class="statistic">

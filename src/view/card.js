@@ -5,7 +5,7 @@ import duration from 'dayjs/plugin/duration';
 const DESCRIPTION_LENGTH = 139;
 
 const createFilmCardTemplate = (card) => {
-  const {comments, film_info: {title, poster, description, totalRating, runtime, genre, release: {date}}, user_details: {watchlist, alreadyWatched, favorite} } = card;
+  const {comments, filmInfo: {title, poster, description, totalRating, runtime, genre, release: {date}}, userDetails: {watchlist, alreadyWatched, favorite} } = card;
   const commentsArray = comments.length;
 
   const generateDate = () => {

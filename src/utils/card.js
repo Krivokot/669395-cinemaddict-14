@@ -18,19 +18,19 @@ const getWeightForNullDate = (dateA, dateB) => {
 
 export const sortCardUp = (cardA, cardB) => {
 
-  const weight = getWeightForNullDate(cardA.film_info.release.date, cardB.film_info.release.date);
+  const weight = getWeightForNullDate(cardA.filmInfo.release.date, cardB.filmInfo.release.date);
 
   if (weight !== null) {
     return weight;
   }
 
-  return dayjs(cardB.film_info.release.date).diff(dayjs(cardA.film_info.release.date));
+  return dayjs(cardB.filmInfo.release.date).diff(dayjs(cardA.filmInfo.release.date));
 };
 
 export const sortRating = (filmA, filmB) => {
-  return filmB.film_info.totalRating - filmA.film_info.totalRating;
+  return filmB.filmInfo.totalRating - filmA.filmInfo.totalRating;
 };
 
 export const getWatchedFilms = (films) => {
-  return films.filter((film) => film.user_details.alreadyWatched).length;
+  return films.filter((film) => film.userDetails.alreadyWatched).length;
 };

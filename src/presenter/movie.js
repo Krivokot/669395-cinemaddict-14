@@ -98,7 +98,7 @@ export default class Movie {
       .toggle('film-card__controls-item--active');
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
-    newCard.user_details.watchlist = !newCard.user_details.watchlist;
+    newCard.userDetails.watchlist = !newCard.userDetails.watchlist;
     this._changeData(
       UserAction.UPDATE_CARD,
       UpdateType.MINOR,
@@ -112,7 +112,7 @@ export default class Movie {
       .toggle('film-card__controls-item--active');
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
-    newCard.user_details.favorite = !newCard.user_details.favorite;
+    newCard.userDetails.favorite = !newCard.userDetails.favorite;
     this._changeData(
       UserAction.UPDATE_CARD,
       UpdateType.MINOR,
@@ -127,7 +127,7 @@ export default class Movie {
       .toggle('film-card__controls-item--active');
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
-    newCard.user_details.alreadyWatched = !newCard.user_details.alreadyWatched;
+    newCard.userDetails.alreadyWatched = !newCard.userDetails.alreadyWatched;
     this._changeData(
       UserAction.UPDATE_CARD,
       UpdateType.MINOR,
