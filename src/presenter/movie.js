@@ -4,6 +4,7 @@ import CommentsPresenter from './comments-list.js';
 import { isEscEvent } from '../utils/common.js';
 import { render, remove } from '../utils/render.js';
 import {UserAction, UpdateType} from '../const.js';
+import {nanoid} from 'nanoid';
 
 const Mode = {
   DEFAULT: 'DEFAULT',
@@ -29,6 +30,7 @@ export default class Movie {
     this._mode = Mode.DEFAULT;
 
     this._handleCardClick = this._handleCardClick.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleWatchListClick = this._handleWatchListClick.bind(this);
     this._handleHistoryClick = this._handleHistoryClick.bind(this);
     this._handleFavoritesClick = this._handleFavoritesClick.bind(this);
@@ -75,21 +77,18 @@ export default class Movie {
   _handleCardClick() {
     document.addEventListener('keydown', this._escKeyDownHandler);
     document.addEventListener('keydown', this._submitKeyDownHandler);
-    this._cardPopupComponent.setButtonCloseClickHandler(this._handleCloseButtonClick);
-    this._cardPopupComponent.setWatchListClickHandler(this._handleWatchListClick);
-    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
-    this._cardPopupComponent.setFavoritesClickHandler(this._handleFavoritesClick);
 
-    this._api.getComments(this._cards.id)
-      .then((comments) => {
-        this._commentsModel.setComments(UpdateType.INIT, comments);
-        this._renderComments();
-      })
-      .catch(() => {
-        this._commentsModel.setComments(UpdateType.INIT, []);
-      });
 
     this._renderPopup();
+  }
+
+  _handleModelEvent(updateType) {
+    switch (updateType) {
+      case UpdateType.MINOR:
+        console.log('привет');
+
+        break;
+    }
   }
 
   _handleWatchListClick() {
@@ -129,12 +128,13 @@ export default class Movie {
       .toggle('film-card__controls-item--active');
 
     const newCard = JSON.parse(JSON.stringify(this._cards));
-    newCard.user_details.already_watched = !newCard.user_details.already_watched;
+    newCard.user_details.alreadyWatched = !newCard.user_details.alreadyWatched;
     this._changeData(
       UserAction.UPDATE_CARD,
       UpdateType.MINOR,
       newCard,
     );
+    this._handleModelEvent(UpdateType.MINOR)
   }
 
   _renderPopup() {
@@ -142,6 +142,20 @@ export default class Movie {
     this._mode = Mode.EDITING;
     render(this._mainPageContainer, this._cardPopupComponent);
     bodyElement.classList.add('hide-overflow');
+
+    this._cardPopupComponent.setButtonCloseClickHandler(this._handleCloseButtonClick);
+    this._cardPopupComponent.setWatchListClickHandler(this._handleWatchListClick);
+    this._cardPopupComponent.setHistoryClickHandler(this._handleHistoryClick);
+    this._cardPopupComponent.setFavoritesClickHandler(this._handleFavoritesClick);
+
+    this._api.getComments(this._cards.id)
+      .then((comments) => {
+        this._commentsModel.setComments(UpdateType.INIT, comments);
+        this._renderComments();
+      })
+      .catch(() => {
+        this._commentsModel.setComments(UpdateType.INIT, []);
+      });
   }
 
   _renderComments() {
@@ -151,9 +165,10 @@ export default class Movie {
     newCommentsArray
       .slice(0, newCommentsArray.length)
       .forEach((commentElement) => {
-        const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel, this._changeData);
+        const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel, this._changeData, this._handleModelEvent);
         commentsPresenter.init();
       });
+      console.log(newCommentsArray);
     this._cardPopupComponent.setEmojiChangeHandler();
     this._cardPopupComponent.setAddCommentKeydownHandler(this._submitKeyDownHandler);
   }
@@ -181,11 +196,11 @@ export default class Movie {
     const emoji = this._cardPopupComponent.getEmoji();
     const text = this._cardPopupComponent.getWrittenComment();
     return {
-      author: 'Ilya',
-      date: '10/10/10 20:20',
+      author: '',
+      date: '',
       emotion: emoji,
-      id: 10,
-      text: text,
+      id: nanoid(),
+      comment: text,
     };
   }
 
@@ -193,7 +208,8 @@ export default class Movie {
     if (evt.ctrlKey && evt.code === 'Enter') {
       evt.preventDefault();
       this._commentsModel.addComment(UpdateType.PATCH, this._getCommentData());
-      this._changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, this._getCommentData());
+      this._changeData(UserAction.ADD_COMMENT, UpdateType.MINOR, this._getCommentData(), this._cards);
+      this.resetView();
     }
   }
 }

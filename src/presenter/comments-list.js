@@ -4,11 +4,12 @@ import {UserAction, UpdateType} from '../const.js';
 
 
 export default class Comments {
-  constructor(container, comment, commentsModel, changeData) {
+  constructor(container, comment, commentsModel, changeData, changePopup) {
     this._container = container;
     this._comment = comment;
     this._commentsModel = commentsModel;
     this._changeData = changeData;
+    this._changePopup = changePopup;
 
     this._commentComponent = new CommentView(this._comment);
 
@@ -24,23 +25,10 @@ export default class Comments {
   }
 
   _handleDeleteClick() {
-    this._handleViewAction(UserAction.DELETE_COMMENT, UpdateType.MINOR, this._comment);
-
-  }
-
-  _handleViewAction(actionType, updateType, update) {
     this._commentsModel.addObserver(this._handleModelEvent);
-    switch (actionType) {
-      case UserAction.ADD_COMMENT:
-        this._commentsModel.addComment(updateType, update);
-        this._changeData(UserAction.ADD_COMMENT, UpdateType.PATCH, update);
-        break;
-      case UserAction.DELETE_COMMENT:
-        this._commentsModel.deleteComment(updateType, update);
-        this._changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, update);
-        break;
-    }
-
+    this._commentsModel.deleteComment(UpdateType.MINOR, this._comment);
+    this._changeData(UserAction.DELETE_COMMENT, UpdateType.MINOR, this._comment);
+    this._changePopup(UpdateType.MINOR);
   }
 
   _handleModelEvent() {

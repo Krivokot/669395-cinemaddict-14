@@ -7,7 +7,7 @@ const createGenresTemplate = (genres) => {
 };
 
 const createFilmInfoPopupTemplate = (card) => {
-  const {writtenComment, checkedEmoji, comments, film_info: {title, poster, description, age_rating, genre, alternative_title, writers, actors, total_rating, director, runtime, release: {date, release_country} }, user_details: {watchlist, already_watched, favorite} } = card;
+  const {writtenComment, checkedEmoji, comments, film_info: {title, poster, description, ageRating, genre, alternativeTitle, writers, actors, totalRating, director, runtime, release: {date, releaseCountry} }, user_details: {watchlist, alreadyWatched, favorite} } = card;
   const commentsArray = comments.length;
 
   const generateDate = () => {
@@ -31,18 +31,18 @@ const createFilmInfoPopupTemplate = (card) => {
         <div class="film-details__poster">
           <img class="film-details__poster-img" src="${poster}" alt="">
 
-          <p class="film-details__age">${age_rating}</p>
+          <p class="film-details__age">${ageRating}</p>
         </div>
 
         <div class="film-details__info">
           <div class="film-details__info-head">
             <div class="film-details__title-wrap">
               <h3 class="film-details__title">${title}</h3>
-              <p class="film-details__title-original">${alternative_title}</p>
+              <p class="film-details__title-original">${alternativeTitle}</p>
             </div>
 
             <div class="film-details__rating">
-              <p class="film-details__total-rating">${total_rating}</p>
+              <p class="film-details__total-rating">${totalRating}</p>
             </div>
           </div>
 
@@ -69,7 +69,7 @@ const createFilmInfoPopupTemplate = (card) => {
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Country</td>
-              <td class="film-details__cell">${release_country}</td>
+              <td class="film-details__cell">${releaseCountry}</td>
             </tr>
             <tr class="film-details__row">
               <td class="film-details__term">Genre${genre.length === 1 ? ' ' : 's'}</td>
@@ -88,7 +88,7 @@ const createFilmInfoPopupTemplate = (card) => {
         <input type="checkbox" class="film-details__control-input visually-hidden" ${watchlist ? 'checked' : ''} id="watchlist" name="watchlist">
         <label for="watchlist" class="film-details__control-label film-details__control-label--watchlist">Add to watchlist</label>
 
-        <input type="checkbox" class="film-details__control-input visually-hidden" ${already_watched ? 'checked' : ''} id="watched" name="watched">
+        <input type="checkbox" class="film-details__control-input visually-hidden" ${alreadyWatched ? 'checked' : ''} id="watched" name="watched">
         <label for="watched" class="film-details__control-label film-details__control-label--watched">Already watched</label>
 
         <input type="checkbox" class="film-details__control-input visually-hidden" ${favorite ? 'checked' : ''} id="favorite" name="favorite">

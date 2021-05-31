@@ -28,9 +28,9 @@ export const sortCardUp = (cardA, cardB) => {
 };
 
 export const sortRating = (filmA, filmB) => {
-  return filmB.film_info.total_rating - filmA.film_info.total_rating;
+  return filmB.film_info.totalRating - filmA.film_info.totalRating;
 };
 
 export const getWatchedFilms = (films) => {
-  return films.filter((film) => film.user_details.already_watched).length;
+  return films.filter((film) => film.user_details.alreadyWatched).length;
 };

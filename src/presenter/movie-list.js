@@ -57,7 +57,6 @@ export default class MovieList {
     this._filterModel.addObserver(this._handleModelEvent);
 
     this._renderMovieList();
-
   }
 
   destroy() {
@@ -111,7 +110,7 @@ export default class MovieList {
       .forEach((presenter) => presenter.resetView());
   }
 
-  _handleViewAction(actionType, updateType, update) {
+  _handleViewAction(actionType, updateType, update, card) {
     switch (actionType) {
       case UserAction.UPDATE_CARD:
         this._api.updateCard(update).then((response) => {
@@ -130,9 +129,10 @@ export default class MovieList {
         });
         break;
       case UserAction.ADD_COMMENT:
-        this._api.addComment(update).then(() => {
+        this._api.addComment(card, update).then(() => {
           this._cardsModel.addComment(updateType, update);
         });
+
         break;
     }
   }
@@ -140,6 +140,7 @@ export default class MovieList {
   _handleModelEvent(updateType) {
     switch (updateType) {
       case UpdateType.MINOR:
+        console.log('привет');
         this._clearCardList();
         this._renderMovieList();
         break;
@@ -255,6 +256,7 @@ export default class MovieList {
     }
     const cards = this._getCards();
     const watched = this._getAlreadyWatched();
+
     if (this._gradeComponent) {
       remove(this._gradeComponent);
       this._gradeComponent = null;

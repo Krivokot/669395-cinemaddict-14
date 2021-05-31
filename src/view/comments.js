@@ -41,6 +41,8 @@ export default class Comment extends AbstractView {
   _deleteClickHandler(evt) {
     evt.preventDefault();
     this._callback.deleteClick();
+    this.getElement().querySelector('.film-details__comment-delete').innerText = 'Deleting...';
+    this.getElement().querySelector('.film-details__comment-delete').disabled = true;
   }
 
   setDeleteClickHandler(callback) {

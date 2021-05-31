@@ -1,10 +1,11 @@
 import AbstractView from './abstract.js';
 import dayjs from 'dayjs';
+import duration from 'dayjs/plugin/duration';
 
 const DESCRIPTION_LENGTH = 139;
 
 const createFilmCardTemplate = (card) => {
-  const {comments, film_info: {title, poster, description, total_rating, runtime, genre, release: {date}}, user_details: {watchlist, already_watched, favorite} } = card;
+  const {comments, film_info: {title, poster, description, totalRating, runtime, genre, release: {date}}, user_details: {watchlist, alreadyWatched, favorite} } = card;
   const commentsArray = comments.length;
 
   const generateDate = () => {
@@ -13,7 +14,6 @@ const createFilmCardTemplate = (card) => {
   };
 
   const generateRuntime = () => {
-    const duration = require('dayjs/plugin/duration');
     dayjs.extend(duration);
 
     return dayjs.duration(runtime, 'minutes').format('H [h] mm [m]');
@@ -31,7 +31,7 @@ const createFilmCardTemplate = (card) => {
   return `
           <article class="film-card">
           <h3 class="film-card__title">${title}</h3>
-          <p class="film-card__rating">${total_rating}</p>
+          <p class="film-card__rating">${totalRating}</p>
           <p class="film-card__info">
             <span class="film-card__year">${generateDate()}</span>
             <span class="film-card__duration">${generateRuntime()}</span>
@@ -42,7 +42,7 @@ const createFilmCardTemplate = (card) => {
           <a class="film-card__comments">${commentsArray} comment${commentsArray === 1 ? '' : 's'}</a>
           <div class="film-card__controls">
             <button class="film-card__controls-item button film-card__controls-item--add-to-watchlist ${watchlist ? 'film-card__controls-item--active' : ''}" type="button">Add to watchlist</button>
-            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${already_watched ? 'film-card__controls-item--active' : ''}" type="button">Mark as watched</button>
+            <button class="film-card__controls-item button film-card__controls-item--mark-as-watched ${alreadyWatched ? 'film-card__controls-item--active' : ''}" type="button">Mark as watched</button>
             <button class="film-card__controls-item button film-card__controls-item--favorite ${favorite ? 'film-card__controls-item--active' : ''}" type="button">Mark as favorite</button>
           </div>
         </article>
