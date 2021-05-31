@@ -2,7 +2,7 @@ import CardView from '../view/card.js';
 import CardPopupView from '../view/card-popup.js';
 import CommentsPresenter from './comments-list.js';
 import { isEscEvent } from '../utils/common.js';
-import { render, remove } from '../utils/render.js';
+import { render, remove} from '../utils/render.js';
 import {UserAction, UpdateType} from '../const.js';
 import {nanoid} from 'nanoid';
 
@@ -83,9 +83,9 @@ export default class Movie {
   }
 
   _handleModelEvent(updateType) {
+
     switch (updateType) {
       case UpdateType.MINOR:
-        console.log('привет');
 
         break;
     }
@@ -103,7 +103,6 @@ export default class Movie {
       UserAction.UPDATE_CARD,
       UpdateType.MINOR,
       newCard);
-
   }
 
   _handleFavoritesClick() {
@@ -134,7 +133,6 @@ export default class Movie {
       UpdateType.MINOR,
       newCard,
     );
-    this._handleModelEvent(UpdateType.MINOR)
   }
 
   _renderPopup() {
@@ -168,15 +166,16 @@ export default class Movie {
         const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel, this._changeData, this._handleModelEvent);
         commentsPresenter.init();
       });
-      console.log(newCommentsArray);
     this._cardPopupComponent.setEmojiChangeHandler();
     this._cardPopupComponent.setAddCommentKeydownHandler(this._submitKeyDownHandler);
   }
 
   _closePopup() {
+
     remove(this._cardPopupComponent);
     bodyElement.classList.remove('hide-overflow');
     document.removeEventListener('keydown', this._escKeyDownHandler);
+    document.removeEventListener('keydown', this._submitKeyDownHandler);
     this._mode = Mode.DEFAULT;
     this._cardPopupComponent.reset(this._cards);
   }

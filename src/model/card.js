@@ -87,7 +87,7 @@ export default class Cards extends Observer {
     const adaptedCard = Object.assign(
       {},
       {
-          comments: card.comments,
+        comments: card.comments,
         film_info: {
           actors: card.film_info.actors,
           ageRating: card.film_info.age_rating,
@@ -112,8 +112,7 @@ export default class Cards extends Observer {
           watchingDate: card.user_details.watching_date,
           watchlist: card.user_details.watchlist,
         },
-
-        },
+      },
     );
 
     return adaptedCard;

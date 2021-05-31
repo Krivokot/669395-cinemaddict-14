@@ -22,8 +22,8 @@ const calculateGenres = (acc, genre) => {
 
 export const getFilmGenresStat = (cards) => {
   const genres = cards.reduce(
-      (acc, card) => card.film_info.genre.reduce(calculateGenres, acc),
-      {}
+    (acc, card) => card.film_info.genre.reduce(calculateGenres, acc),
+    {},
   );
 
   return Object.entries(genres).sort(([, a], [, b]) => b - a);

@@ -140,7 +140,6 @@ export default class MovieList {
   _handleModelEvent(updateType) {
     switch (updateType) {
       case UpdateType.MINOR:
-        console.log('привет');
         this._clearCardList();
         this._renderMovieList();
         break;

@@ -204,6 +204,7 @@ export default class CardPopup extends SmartView {
     this.getElement().querySelector('.film-details__comment-input').addEventListener('keydown', this._addCommentKeydownHandler);
   }
 
+
   restoreHandlers() {
     this.setEmojiChangeHandler();
     this.setButtonCloseClickHandler(this._callback.clickCloseButton);
@@ -218,6 +219,7 @@ export default class CardPopup extends SmartView {
       {},
       card,
       {
+        card,
         checkedEmoji: false,
       },
     );
@@ -236,6 +238,7 @@ export default class CardPopup extends SmartView {
   _historyClickHandler(evt) {
     evt.preventDefault();
     this._callback.historyClick();
+
   }
 
   _favoritesClickHandler(evt) {
