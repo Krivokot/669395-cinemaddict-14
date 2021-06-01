@@ -92,10 +92,10 @@ export default class Movie {
           this._closePopup();
           this._renderPopup();
         })
-        .catch(() => {
+        .catch(() => { // fixme сократить квери селкторы, добавить атрибут тогл
           this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').innerText = 'Delete';
-          this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').disabled = 'false';
-            });
+          this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').disabled = false;
+        });
         break;
       case UserAction.ADD_COMMENT:
         this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').disabled = true;
@@ -163,6 +163,7 @@ export default class Movie {
   }
 
   _renderPopup() {
+    console.log(this._cards);
     this._cardPopupComponent = new CardPopupView(this._cards);
     this._changeMode();
     this._mode = Mode.EDITING;

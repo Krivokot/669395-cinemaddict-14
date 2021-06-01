@@ -27,15 +27,6 @@ export default class Comments {
     this._changeData(UserAction.DELETE_COMMENT, UpdateType.MINOR, this._comment);
   }
 
-
-
-  destroy() {
-
-    remove(this._commentComponent);
-
-    this._commentsModel.removeObserver(this._handleModelEvent);
-  }
-
   _renderComments() {
     render(this._container,  this._commentComponent);
   }
