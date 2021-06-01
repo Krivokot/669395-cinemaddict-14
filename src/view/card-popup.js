@@ -7,7 +7,7 @@ const createGenresTemplate = (genres) => {
 };
 
 const createFilmInfoPopupTemplate = (card) => {
-  const {writtenComment, checkedEmoji, comments, filmInfo: {title, poster, description, ageRating, genre, alternativeTitle, writers, actors, totalRating, director, runtime, release: {date, releaseCountry} }, userDetails: {watchlist, alreadyWatched, favorite} } = card;
+  const {writtenComment, checkedEmoji, comments, filmInfo: {title, poster, description, ageRating, genre, alternativeTitle, writers, actors, totalRating, director, runtime, release: {date, releaseCountry} }, userDetails: {watchlist, alreadyWatched, favorite}, isDisabled} = card;
   const commentsArray = comments.length;
 
   const generateDate = () => {
@@ -110,7 +110,7 @@ const createFilmInfoPopupTemplate = (card) => {
           </div>
 
           <label class="film-details__comment-label">
-            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment">${writtenComment ? writtenComment : ''}</textarea>
+            <textarea class="film-details__comment-input" placeholder="Select reaction below and write comment here" name="comment" ${isDisabled ? 'disabled' : '' }>${writtenComment ? writtenComment : ''}</textarea>
           </label>
 
           <div class="film-details__emoji-list">
@@ -219,8 +219,8 @@ export default class CardPopup extends SmartView {
       {},
       card,
       {
-        card,
         checkedEmoji: false,
+        isDisabled: false,
       },
     );
   }

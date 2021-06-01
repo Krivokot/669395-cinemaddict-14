@@ -107,7 +107,7 @@ export default class MovieList {
   _handleModeChange() {
     Object
       .values(this._cardPresenter)
-      .forEach((presenter) => presenter.resetView());
+      .forEach((presenter) => presenter.resetPopupView());
   }
 
   _handleViewAction(actionType, updateType, update, card) {
@@ -122,17 +122,6 @@ export default class MovieList {
         break;
       case UserAction.DELETE_CARD:
         this._cardsModel.deleteCard(updateType, update);
-        break;
-      case UserAction.DELETE_COMMENT:
-        this._api.deleteComment(update).then(() => {
-          this._cardsModel.deleteComment(updateType, update);
-        });
-        break;
-      case UserAction.ADD_COMMENT:
-        this._api.addComment(card, update).then(() => {
-          this._cardsModel.addComment(updateType, update);
-        });
-
         break;
     }
   }
