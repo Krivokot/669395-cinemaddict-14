@@ -92,7 +92,7 @@ export default class Movie {
           this._closePopup();
           this._renderPopup();
         })
-        .catch(() => { // fixme сократить квери селкторы, добавить атрибут тогл
+        .catch(() => { // TODO сократить квери селкторы, добавить атрибут тогл
           this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').innerText = 'Delete';
           this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').disabled = false;
         });
@@ -126,7 +126,8 @@ export default class Movie {
     this._changeData(
       UserAction.UPDATE_CARD,
       UpdateType.MINOR,
-      newCard);
+      newCard
+      );
       this._handleViewAction(UserAction.SET_FILTER);
   }
 
