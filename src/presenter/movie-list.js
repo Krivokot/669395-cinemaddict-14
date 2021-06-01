@@ -110,7 +110,7 @@ export default class MovieList {
       .forEach((presenter) => presenter.resetPopupView());
   }
 
-  _handleViewAction(actionType, updateType, update, card) {
+  _handleViewAction(actionType, updateType, update) {
     switch (actionType) {
       case UserAction.UPDATE_CARD:
         this._api.updateCard(update).then((response) => {

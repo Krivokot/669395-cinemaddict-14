@@ -78,11 +78,16 @@ export default class Movie {
     this._renderPopup();
   }
 
-  _handleViewAction(actionType, updateType, update) {
+  _handleViewAction(actionType, updateType, update, card) {
+    const commentDeleteElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete');
+    const commentInputElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-input');
+    const newCommentEmojiElement = this._cardPopupComponent.getElement().querySelector('.film-details__new-comment-emoji');
+
     switch (actionType) {
       case UserAction.SET_FILTER:
         if (this._mode !== Mode.DEFAULT) {
           this._closePopup();
+          this._cards = update;
           this._renderPopup();
         }
         break;
@@ -90,26 +95,28 @@ export default class Movie {
         this._api.deleteComment(update).then(() => {
           this._cardsModel.deleteComment(updateType, update);
           this._closePopup();
+          this._cards = card;
           this._renderPopup();
         })
-        .catch(() => { // TODO сократить квери селкторы, добавить атрибут тогл
-          this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').innerText = 'Delete';
-          this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').disabled = false;
-        });
+          .catch(() => {
+            commentDeleteElement.innerText = 'Delete';
+            commentDeleteElement.disabled = false;
+          });
         break;
       case UserAction.ADD_COMMENT:
-        this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').disabled = true;
-          this._api.addComment(this._cards, update).then(() => {
-            this._cardsModel.addComment(updateType, update);
-            this._closePopup();
-            this._renderPopup();
-            this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').value = ' ';
-            this._cardPopupComponent.getElement().querySelector('.film-details__new-comment-emoji').src = ' ';
-            this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').disabled = false;
-          })
+        commentInputElement.setAttribute('disabled', '');
+        this._api.addComment(this._cards, update).then(() => {
+          this._cardsModel.addComment(updateType, update);
+          this._closePopup();
+          this._cards = card;
+          this._renderPopup();
+          commentInputElement.value = ' ';
+          newCommentEmojiElement.src = ' ';
+          commentInputElement.removeAttribute('disabled');
+        })
           .catch(() => {
-            this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').classList.add('shake');
-            this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').disabled = false;
+            commentInputElement.classList.add('shake');
+            commentInputElement.disabled = false;
           });
         break;
     }
@@ -126,9 +133,9 @@ export default class Movie {
     this._changeData(
       UserAction.UPDATE_CARD,
       UpdateType.MINOR,
-      newCard
-      );
-      this._handleViewAction(UserAction.SET_FILTER);
+      newCard,
+    );
+    this._handleViewAction(UserAction.SET_FILTER, UpdateType.PATCH, newCard);
   }
 
   _handleFavoritesClick() {
@@ -144,7 +151,7 @@ export default class Movie {
       UpdateType.MINOR,
       newCard,
     );
-    this._handleViewAction(UserAction.SET_FILTER);
+    this._handleViewAction(UserAction.SET_FILTER, UpdateType.PATCH, newCard);
   }
 
   _handleHistoryClick() {
@@ -160,11 +167,10 @@ export default class Movie {
       UpdateType.MINOR,
       newCard,
     );
-    this._handleViewAction(UserAction.SET_FILTER);
+    this._handleViewAction(UserAction.SET_FILTER, UpdateType.PATCH, newCard);
   }
 
   _renderPopup() {
-    console.log(this._cards);
     this._cardPopupComponent = new CardPopupView(this._cards);
     this._changeMode();
     this._mode = Mode.EDITING;
@@ -196,7 +202,7 @@ export default class Movie {
     newCommentsArray
       .slice(0, newCommentsArray.length)
       .forEach((commentElement) => {
-        const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel, this._handleViewAction);
+        const commentsPresenter = new CommentsPresenter(commentContainerElement, commentElement, this._commentsModel, this._handleViewAction, this._cards);
         commentsPresenter.init();
       });
     this._cardPopupComponent.setEmojiChangeHandler();
@@ -240,7 +246,15 @@ export default class Movie {
     if (evt.ctrlKey && evt.code === 'Enter') {
       evt.preventDefault();
       this._commentsModel.addComment(UpdateType.PATCH, this._getCommentData());
-      this._handleViewAction(UserAction.ADD_COMMENT, UpdateType.MINOR, this._getCommentData(), this._cards);
+      const newCard = JSON.parse(JSON.stringify(this._cards));
+      const newCommentsList = [];
+      this._commentsModel.getComments().forEach((card) => {
+        return newCommentsList.push(card.id);
+      });
+
+      newCard.comments = newCommentsList;
+
+      this._handleViewAction(UserAction.ADD_COMMENT, UpdateType.PATCH, this._getCommentData(), newCard);
       this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').classList.remove('shake');
     }
 
