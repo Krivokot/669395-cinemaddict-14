@@ -82,8 +82,8 @@ export default class Movie {
     const commentDeleteElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete');
     const commentInputElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-input');
     const newCommentEmojiElement = this._cardPopupComponent.getElement().querySelector('.film-details__new-comment-emoji');
-// FIXME зафиксировать скролл
-// TODO протестировать обновление попапа
+    // FIXME зафиксировать скролл
+    // TODO протестировать обновление попапа
     switch (actionType) {
       case UserAction.SET_FILTER:
         if (this._mode !== Mode.DEFAULT) {
