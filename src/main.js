@@ -51,7 +51,7 @@ api.getCards()
   .then((cards) => {
     cardsModel.setCards(UpdateType.INIT, cards);
     const moviesCountNameTemplate = cards.length === 1 ? `<p> ${cards.length} movie inside</p>` : `<p> ${cards.length} movies inside</p>`;
-    footerStatisticElement.insertAdjacentHTML('beforeend', moviesCountNameTemplate)
+    footerStatisticElement.insertAdjacentHTML('beforeend', moviesCountNameTemplate);
   })
   .catch(() => {
     cardsModel.setCards(UpdateType.INIT, []);
