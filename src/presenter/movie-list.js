@@ -185,7 +185,7 @@ export default class MovieList {
 
     resetRenderedCardCount ?
       this._renderedCardCount = CARD_COUNT_PER_STEP
-    :
+      :
       this._renderedCardCount = Math.min(cardCount, this._renderedCardCount);
 
 

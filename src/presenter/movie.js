@@ -92,18 +92,18 @@ export default class Movie {
         break;
       case UserAction.DELETE_COMMENT:
         this._api.deleteComment(update)
-        .then(() => {
-          this._cardsModel.deleteComment(updateType, update);
-          this._closePopup();
-          this._cards = card;
-          this._changeData(
-            UserAction.UPDATE_CARD,
-            UpdateType.MINOR,
-            this._cards,
-          );
-          this._renderPopup();
+          .then(() => {
+            this._cardsModel.deleteComment(updateType, update);
+            this._closePopup();
+            this._cards = card;
+            this._changeData(
+              UserAction.UPDATE_CARD,
+              UpdateType.MINOR,
+              this._cards,
+            );
+            this._renderPopup();
 
-        })
+          })
           .catch(() => {
             this._commentsModel.addComment(updateType, update);
             commentDeleteElement.innerText = 'Delete';
@@ -256,7 +256,7 @@ export default class Movie {
   }
 
   _submitKeyDownHandler(evt) {
-    this._comment = this._getCommentData()
+    this._comment = this._getCommentData();
     if (evt.ctrlKey && evt.code === 'Enter') {
       evt.preventDefault();
       this._commentsModel.addComment(UpdateType.PATCH, this._comment);

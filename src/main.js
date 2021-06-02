@@ -52,7 +52,7 @@ api.getCards()
     cardsModel.setCards(UpdateType.INIT, cards);
     cards.length === 1 ?
       footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movie inside</p>`)
-    :
+      :
       footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movies inside</p>`);
 
   })
