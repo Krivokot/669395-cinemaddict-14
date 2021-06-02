@@ -23,6 +23,7 @@ export default class Movie {
     this._commentsModel = commentsModel;
     this._cards = cards;
     this._cardsModel = cardsModel;
+    this._comment = null;
 
 
     this._cardComponent = null;
@@ -83,7 +84,7 @@ export default class Movie {
     const commentInputElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-input');
     const newCommentEmojiElement = this._cardPopupComponent.getElement().querySelector('.film-details__new-comment-emoji');
     // FIXME зафиксировать скролл
-    // TODO протестировать обновление попапа
+
     switch (actionType) {
       case UserAction.SET_FILTER:
         if (this._mode !== Mode.DEFAULT) {
@@ -93,13 +94,20 @@ export default class Movie {
         }
         break;
       case UserAction.DELETE_COMMENT:
-        this._api.deleteComment(update).then(() => {
+        this._api.deleteComment(update)
+        .then(() => {
           this._cardsModel.deleteComment(updateType, update);
           this._closePopup();
           this._cards = card;
+          this._changeData(
+            UserAction.UPDATE_CARD,
+            UpdateType.MINOR,
+            this._cards,
+          );
           this._renderPopup();
         })
           .catch(() => {
+            this._commentsModel.addComment(updateType, update);
             commentDeleteElement.innerText = 'Delete';
             commentDeleteElement.disabled = false;
           });
@@ -110,12 +118,18 @@ export default class Movie {
           this._cardsModel.addComment(updateType, update);
           this._closePopup();
           this._cards = card;
+          this._changeData(
+            UserAction.UPDATE_CARD,
+            UpdateType.MINOR,
+            this._cards,
+          );
           this._renderPopup();
           commentInputElement.value = ' ';
           newCommentEmojiElement.src = ' ';
           commentInputElement.removeAttribute('disabled');
         })
           .catch(() => {
+            this._commentsModel.deleteComment(UpdateType.PATCH, this._comment);
             commentInputElement.classList.add('shake');
             commentInputElement.disabled = false;
           });
@@ -244,9 +258,10 @@ export default class Movie {
   }
 
   _submitKeyDownHandler(evt) {
+    this._comment = this._getCommentData()
     if (evt.ctrlKey && evt.code === 'Enter') {
       evt.preventDefault();
-      this._commentsModel.addComment(UpdateType.PATCH, this._getCommentData());
+      this._commentsModel.addComment(UpdateType.PATCH, this._comment);
       const newCard = JSON.parse(JSON.stringify(this._cards));
       const newCommentsList = [];
       this._commentsModel.getComments().forEach((card) => {
@@ -255,7 +270,7 @@ export default class Movie {
 
       newCard.comments = newCommentsList;
 
-      this._handleViewAction(UserAction.ADD_COMMENT, UpdateType.PATCH, this._getCommentData(), newCard);
+      this._handleViewAction(UserAction.ADD_COMMENT, UpdateType.PATCH, this._comment, newCard);
       this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').classList.remove('shake');
     }
 

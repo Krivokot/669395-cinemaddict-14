@@ -24,7 +24,8 @@ export default class Comments {
   }
 
   _handleDeleteClick() {
-    this._commentsModel.deleteComment(UpdateType.MINOR, this._comment);
+
+    this._commentsModel.deleteComment(UpdateType.PATCH, this._comment);
 
     const newCard = JSON.parse(JSON.stringify(this._card));
     const newCommentsList = [];
@@ -33,6 +34,7 @@ export default class Comments {
     });
     newCard.comments = newCommentsList;
     this._changeData(UserAction.DELETE_COMMENT, UpdateType.PATCH, this._comment, newCard);
+
   }
 
   _renderComments() {
