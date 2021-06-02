@@ -50,11 +50,8 @@ filterPresenter.init();
 api.getCards()
   .then((cards) => {
     cardsModel.setCards(UpdateType.INIT, cards);
-    cards.length === 1 ?
-      footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movie inside</p>`)
-      :
-      footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movies inside</p>`);
-
+    const moviesCountNameTemplate = cards.length === 1 ? `<p> ${cards.length} movie inside</p>` : `<p> ${cards.length} movies inside</p>`;
+    footerStatisticElement.insertAdjacentHTML('beforeend', moviesCountNameTemplate)
   })
   .catch(() => {
     cardsModel.setCards(UpdateType.INIT, []);
