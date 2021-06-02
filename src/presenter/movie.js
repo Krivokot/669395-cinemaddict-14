@@ -78,9 +78,6 @@ export default class Movie {
   }
 
   _handleViewAction(actionType, updateType, update, card) {
-    const commentDeleteElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete');
-    const commentInputElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-input');
-    const newCommentEmojiElement = this._cardPopupComponent.getElement().querySelector('.film-details__new-comment-emoji');
 
     switch (actionType) {
       case UserAction.SET_FILTER:
@@ -106,12 +103,12 @@ export default class Movie {
           })
           .catch(() => {
             this._commentsModel.addComment(updateType, update);
-            commentDeleteElement.innerText = 'Delete';
-            commentDeleteElement.disabled = false;
+            this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').innerText = 'Delete';
+            this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete').removeAttribute('disabled');
           });
         break;
       case UserAction.ADD_COMMENT:
-        commentInputElement.setAttribute('disabled', '');
+        this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').setAttribute('disabled', '');
         this._api.addComment(this._cards, update).then(() => {
           this._cardsModel.addComment(updateType, update);
           this._closePopup();
@@ -122,14 +119,14 @@ export default class Movie {
             this._cards,
           );
           this._renderPopup();
-          commentInputElement.value = ' ';
-          newCommentEmojiElement.src = ' ';
-          commentInputElement.removeAttribute('disabled');
+          this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').value = ' ';
+          this._cardPopupComponent.getElement().querySelector('.film-details__new-comment-emoji').src = ' ';
+          this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').removeAttribute('disabled');
         })
           .catch(() => {
             this._commentsModel.deleteComment(UpdateType.PATCH, this._comment);
-            commentInputElement.classList.add('shake');
-            commentInputElement.disabled = false;
+            this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').classList.add('shake');
+            this._cardPopupComponent.getElement().querySelector('.film-details__comment-input').removeAttribute('disabled');
           });
         break;
     }
