@@ -50,11 +50,11 @@ filterPresenter.init();
 api.getCards()
   .then((cards) => {
     cardsModel.setCards(UpdateType.INIT, cards);
-    if (cards.length === 1) {
-      footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movie inside</p>`);
-    } else {
+    cards.length === 1 ?
+      footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movie inside</p>`)
+    :
       footerStatisticElement.insertAdjacentHTML('beforeend', `<p> ${cards.length} movies inside</p>`);
-    }
+
   })
   .catch(() => {
     cardsModel.setCards(UpdateType.INIT, []);

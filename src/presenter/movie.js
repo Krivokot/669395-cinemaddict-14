@@ -63,7 +63,6 @@ export default class Movie {
 
   update() {
     remove(this._cardComponent);
-    // remove(this._cardPopupComponent);
   }
 
 
@@ -72,7 +71,6 @@ export default class Movie {
       this._closePopup();
     }
   }
-
 
   _handleCardClick() {
 
@@ -83,7 +81,6 @@ export default class Movie {
     const commentDeleteElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-delete');
     const commentInputElement = this._cardPopupComponent.getElement().querySelector('.film-details__comment-input');
     const newCommentEmojiElement = this._cardPopupComponent.getElement().querySelector('.film-details__new-comment-emoji');
-    // FIXME зафиксировать скролл
 
     switch (actionType) {
       case UserAction.SET_FILTER:
@@ -105,6 +102,7 @@ export default class Movie {
             this._cards,
           );
           this._renderPopup();
+
         })
           .catch(() => {
             this._commentsModel.addComment(updateType, update);

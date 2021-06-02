@@ -214,17 +214,6 @@ export default class CardPopup extends SmartView {
     this.setAddCommentKeydownHandler(this._callback.addComment);
   }
 
-  static parseCardToData(card) {
-    return Object.assign(
-      {},
-      card,
-      {
-        checkedEmoji: false,
-        isDisabled: false,
-      },
-    );
-  }
-
   _btnCloseClickHandler(evt) {
     evt.preventDefault();
     this._callback.clickCloseButton();
@@ -264,6 +253,17 @@ export default class CardPopup extends SmartView {
   setFavoritesClickHandler(callback) {
     this._callback.favoritesClick = callback;
     this.getElement().querySelector('.film-details__control-label--favorite').addEventListener('click', this._favoritesClickHandler);
+  }
+
+  static parseCardToData(card) {
+    return Object.assign(
+      {},
+      card,
+      {
+        checkedEmoji: false,
+        isDisabled: false,
+      },
+    );
   }
 }
 

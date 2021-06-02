@@ -183,11 +183,11 @@ export default class MovieList {
     remove(this._noCardsComponent);
     remove(this._showMoreButtonComponent);
 
-    if (resetRenderedCardCount) {
-      this._renderedCardCount = CARD_COUNT_PER_STEP;
-    } else {
+    resetRenderedCardCount ?
+      this._renderedCardCount = CARD_COUNT_PER_STEP
+    :
       this._renderedCardCount = Math.min(cardCount, this._renderedCardCount);
-    }
+
 
     if (resetSortType) {
       this._currentSortType = SortType.DEFAULT;
