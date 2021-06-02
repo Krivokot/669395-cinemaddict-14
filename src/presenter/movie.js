@@ -73,7 +73,7 @@ export default class Movie {
   }
 
   _handleCardClick() {
-
+    this.resetPopupView();
     this._renderPopup();
   }
 
